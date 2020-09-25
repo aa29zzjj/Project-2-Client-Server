@@ -11,7 +11,7 @@
 Our **first objective** is for you to be able to work with client side and server side UDP and TCP sockets.
 Our **second objective** is to understand the differences (at the programming level) between the TCP and UDP protocols.
 
-In this project, you will also get to explore Remote Procedure Calls (RPC's) and Digital Signatures.
+In this project, you will also explore Remote Procedure Calls (RPC's) and Digital Signatures.
 
 So, our **third objective** is for you to understand the abstraction provided by RPC. We do this by asking that you use a proxy design and hide your communication code in an application method. And, our **fourth objective** is to expose you to some of the mechanics behind RSA digital signatures.
 
