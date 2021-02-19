@@ -2,9 +2,9 @@
 
 ## Project 2 Client-Server Computing
 
-### Assigned: Friday, September 25, 2020
+### Assigned: Friday, February 19, 2021
 
-### Due: Friday October 9, 2020,11:59pm
+### Due: Friday March 5, 2021,11:59pm
 
 ### Learning Objectives:
 
@@ -13,7 +13,7 @@ Our **second objective** is to understand the differences (at the programming le
 
 In this project, you will also explore Remote Procedure Calls (RPC's) and Digital Signatures.
 
-So, our **third objective** is for you to understand the abstraction provided by RPC. We do this by asking that you use a proxy design and hide your communication code in an application method. And, our **fourth objective** is to expose you to some of the mechanics behind RSA digital signatures.
+So, our **third objective** is for you to understand the abstraction provided by RPC. We do this by asking that you use a proxy design and hide communication code and keep it separate from your application code. And, our **fourth objective** is to expose you to some of the mechanics behind RSA digital signatures.
 
 There are five separate and distinct tasks in Project 2.
 
@@ -25,14 +25,16 @@ In all of what follows, we are concerned with designing servers to handle one cl
 
 In addition, for all of what follows, we are assuming that the server is run before the client is run. If you want to handle the case where the client is run first, without a running server, that is great but will receive no additional credit.
 
+In this assignment, you need not be concerned with data validation. You may assume that the data entered by users is correctly formatted.
+
 In general, if these requirements do not explicitly ask for a certain feature, then you are not required to provide that feature. No additional points are awarded for extra features.
 
 ## Task 1 Use the IntelliJ Project Name "Project2Task1".
 
 In Task 1, you will make several modifications to EchoServerUDP.java and EchoClientUDP.java. Note that
-these two programs are standard Java and we do not need to construct a web application in IntelliJ.
+these two programs are standard Java and we do not need to construct a web application in IntelliJ. Both of these programs may be placed in the same IntelliJ project.
 
-EchoServerUDP.java
+EchoServerUDP.java from Coulouris text
 
 ```
 import java.net.*;
@@ -60,7 +62,13 @@ public class EchoServerUDP{
 
 ```
 
-EchoClientUDP.java
+Note how the server uses a DatagramPacket to receive data from a client (in the request object) and how it uses a DatagramPacket to send data back to the client (in the reply object). A DatagramPacket is always based on a byte array. So, to send a message in a DatagramPacket, we must first convert the message to a byte array. To receive a message from a DatagramPacket, we must convert the byte array to a message.
+
+Note below how the client does the same thing. The client wants to send a String message. So, it extracts a byte array from the String (the variable m). And we then use m to build the DatagramPacket.
+
+When the client receives a reply, the method reply.getData() returns a byte array - which we use to build a String object.
+
+EchoClientUDP.java from Coulouris text
 
 ```
 import java.net.*;
@@ -96,13 +104,13 @@ public class EchoClientUDP{
 2. Document the client and the server. Describe what each line of code does.
 3. Add a line at the top of the client so that it announces, by printing a message, &quot;The client is running.&quot; at start up.
 4. Add a line at the top of the server so that it announces &quot;The server is running.&quot; at start up.
-5. Make additional modifications in the server code so that the request data is copied to an array with the correct number of bytes. Use this array of bytes to build a String of the correct size. Without these modifications, trailing zero bytes may be displayed on each visit. Upon each visit, your server will display the request arriving from the client.
-6. If the client enters the command &quot;quit!&quot;, both the client and the server will halt execution. When the client enters &quot;quit!&quot; it sends &quot;quit!&quot; to the sever but does not wait for any reply.
-7. Add a line in the client so that it announces when it is quitting. It will read "Client side exiting.".
-8. Add a line in the server so that it announces when it is quitting. The server only quits when it is told to do so by the client. It will read "Server side exiting.".
+5. On the server, examine the length of the requestString and note that it is too large. Make modifications to the server code so that the request data is copied to an array with the correct number of bytes. Use this array of bytes to build a requestString of the correct size. Without these modifications, incorrect data may be displayed on the server. Upon each visit, your server will display the request arriving from the client.
+6. If the client enters the command &quot;stop!&quot;, both the client and the server will halt execution. When the client program receives &quot;stop!&quot; from the user, it sends &quot;stop!&quot; to the sever and exits and does not wait for any reply.
+7. Add a line in the client so that it announces when it is quitting. It will write "Client side quitting" to the client side console.
+8. Add a line in the server so that it announces when it is quitting. The server only quits when it is told to do so by the client. It will write "Server side quitting" to the server side console.
 9. Note, in the remaining tasks (Tasks 2 through 5), we do not provide the client with the ability to stop the server. In those tasks, the server is left running - forever.
 
-Produce a screen shot illustrating a successful execution and submit the screenshot in the description folder as described at the end of this document. In the screenshot, use your name for the data that the client is reading from the keyboard and sending to the server. Also, show the client using the &quot;quit!&quot; option and show how the client and server respond.
+Produce a screen shot illustrating a successful execution and submit the screenshot in the description folder as described at the end of this document. In the screenshot, use your name for the data that the client is reading from the keyboard and sending to the server. Also, show the client using the &quot;stop!&quot; option and show how the client and server respond.
 
 Alternatively, you can create a screencast video of your working client and server.
 
@@ -114,13 +122,45 @@ Alternatively, you can create a screencast video of your working client and serv
 
 ## Task 2 Use the IntelliJ Project Name "Project2Task2"
 
-Make the following modifications to the original EchoServerUDP.java and EchoClientUDP.java:
+Make the following modifications to the original "EchoServerUDP.java" and "EchoClientUDP.java":
 
-1. The server will hold an integer value sum, initialized to 0, and will receive requests from the client - each of which includes a value to be added to the sum. Upon each request, the server will return the new sum as a response to the client. On the server side console, upon each visit by the client, the new sum will be displayed.
-2. Separate concerns on the client. On the client, all of the communication code will be placed in a method named &quot;add&quot;. In other words, the main method of the client will have no code related to interacting with a server. Instead, the main routine will simply call a local method named &quot;add&quot;. The &quot;add&quot; method will not perform any addition, instead, it will request that the server perform the addition. The &quot;add&quot; method will encapsulate or hide all communication with the server. It is within the &quot;add&quot; method where we actually work with sockets. This is a variation of what is called a &quot;proxy design&quot;. The &quot;add&quot; method is serving as a proxy for the server. When your code makes a call on the local "add" method, you are actually making a remote procedure call (RPC).
-3. Write a client that sends 1000 messages to your server in order to compute the sum 1+2+3+..+1000. Since we are using a proxy design, your client side main routine will call its local &quot;add&quot; method 1000 times. The &quot;add&quot; method actually sends the message to the server. Display the final result to the user on the client side. There is no need to display partial sums on the client side. If you were to run the client a second time, it would be working with the sum that was left on the server by the first client. That is, the server is still alive and is available for use.
+0. Name the client "AddingClientUDP.java". Name the server "AddingServerUDP.java".
+1. The server will hold an integer value sum, initialized to 0, and will receive requests from the client - each of which includes an integer value (positive or negative or 0) to be added to the sum. Upon each request, the server will return the new sum as a response to the client. On the server side console, upon each visit by the client, the client's request and the new sum will be displayed.
+2. Separate concerns on the client. On the client, all of the communication code will be placed in a method named &quot;add&quot;. In other words, the main method of the client will have no code related to interacting with the server. Instead, the main routine will simply call a local method named &quot;add&quot;. The &quot;add&quot; method will not perform any addition, instead, it will request that the server perform the addition. The &quot;add&quot; method will encapsulate or hide all communication with the server. It is within the &quot;add&quot; method where we actually work with sockets. This is a variation of what is called a &quot;proxy design&quot;. The &quot;add&quot; method is serving as a proxy for the server. When your code makes a call on the local "add" method, you are actually making a remote procedure call (RPC). The client side &quot;add&quot; method has the following signature:
 
-Produce a screen shot illustrating a successful execution and submit the screenshot in the description folder as described at the end of this document.
+```
+public static int add(int i)
+
+```
+3. Separate concerns on the server. Your code that listens for a socket connection should be separate from the code that performs the add operation.
+
+4. Write a client and server that has the following client side interaction with a user:
+
+```
+The client is running.
+3
+The server returned 3.
+2
+The server returned 5.
+-1
+The server returned 4.
+6
+The server returned 10.
+stop!
+Client side quitting.
+
+If the client is restarted we have:
+The client is running.
+1
+The server returned 11.
+stop!
+Client side quitting.
+
+```
+Note: UDP messages are made up of byte arrays. You will need to take an int and place it into a four byte byte array before sending. When receiving, you will need to extract an int from the byte array. You may use code from external sources to help you do this. But be careful to site your sources with a clear URL.
+
+
+Produce a screen shot illustrating a successful execution (client and server) and submit the screenshot in the description folder as described at the end of this document.
 
 Alternatively, you can create a screencast video of your working client and server.
 
@@ -131,13 +171,57 @@ Alternatively, you can create a screencast video of your working client and serv
 
 ## Task 3 Use the IntelliJ Project Name "Project2Task3"
 
-Modify your work in Task 2 so that the client may request either an &quot;add&quot; or &quot;subtract&quot; or &quot;view&quot; operation be performed by the server. In addition, each request will pass along an integer ID. Thus, the client will form a packet with the following values: ID, operation (add or subtract or view), and value (if the operation is other than view). The server will carry out the correct computation (add or subtract or view) using the sum associated with the ID found in each request. The client will be menu driven and will repeatedly ask the user for the user ID, operation, and value (if not a view request). When the operation is &quot;view&quot;, the value held on the server is returned. When the operation is &quot;add&quot; or &quot;subtract&quot; the server performs the operation and simply returns &quot;OK&quot;. During execution, the client will display each returned value from the server to the user. This returned value will be either &quot;OK&quot; or a value (if a view request was made). If the server receives an ID that it has not seen before, that ID will initially be associated with a sum of 0.
+0. Name the client "RemoteVariableClientUDP.java". Name the server "RemoteVariableServerUDP.java".
 
-On the server, you will need to map each ID to the value of a sum. Different ID&#39;s may be presented and each will have its own sum. The server is given no prior knowledge of what ID&#39;s will be transmitted to it by the client. You may only assume that ID&#39;s are positive integers.
+1. Modify your work in Task 2 so that the client may request either an &quot;add&quot; or &quot;subtract&quot; or &quot;view&quot; operation be performed by the server. In addition, each request will pass along an integer ID. This ID is used to uniquely identify the user. Thus, the client will form a packet with the following values: ID, operation (add or subtract or view), and value (if the operation is other than view). The server will carry out the correct computation (add or subtract or view) using the sum associated with the ID found in each request. The client will be menu driven and will repeatedly ask the user for the user ID, operation, and value (if not a view request). When the operation is &quot;view&quot;, the value held on the server is simply returned. When the operation is &quot;add&quot; or &quot;subtract&quot; the server performs the operation and returns the sum. During execution, the client will display each returned value from the server to the user. If the server receives an ID that it has not seen before, that ID will initially be associated with a sum of 0.
 
-The client side menu will provide an option to exit the client. Exiting the client has no impact on the server.
+2. On the server, you will need to map each ID to the value of a sum. Different ID&#39;s may be presented and each will have its own sum. The server is given no prior knowledge of what ID&#39;s will be transmitted to it by the client. You may only assume that ID&#39;s are positive integers. You are required to store the pair, the ID and its associated sum, in a Java TreeMap.
 
-As you did in Task 2, use a proxy design to encapsulate the communication code.
+The client side menu will provide an option to exit the client. Exiting the client has no impact on the server. Here is an example client side interaction:
+
+```
+1. Add a value to your sum.
+2. Subtract a value from your sum.
+3. View your sum.
+4. Exit client
+1
+Enter value to add:
+5
+Enter your ID:
+33
+The result is 5.
+
+1. Add a value to your sum.
+2. Subtract a value from your sum.
+3. View your sum.
+4. Exit client
+1
+Enter value to add:
+14
+Enter your ID:
+33
+The result is 19.
+
+1. Add a value to your sum.
+2. Subtract a value from your sum.
+3. View your sum.
+4. Exit client
+1
+Enter value to add:
+10
+Enter your ID:
+32
+The result is 10.
+
+1. Add a value to your sum.
+2. Subtract a value from your sum.
+3. View your sum.
+4. Exit client
+4
+Client side quitting.
+```
+
+3. As you did in Task 2, use a proxy design to encapsulate the communication code.
 
 Produce a screen shot illustrating a successful execution and submit the screenshot in the description folder as described at the end of this document. Show three different clients interacting with the server using three distinct ID&#39;s.
 
@@ -151,10 +235,10 @@ Alternatively, you can create a screencast video of your working client and serv
 
 ## Task 4 Use the IntelliJ Project Name "Project2Task4"
 
-This is almost the same task as Task 3. The only difference is you will use TCP rather than UDP. Make the necessary modifications to EchoServerTCP.java and EchoClientTCP.java so that they behave the same
-way as does your solution to Task 3.
 
-EchoServerTCP.java
+0. This is almost the same task as Task 3. The only difference is you will use TCP rather than UDP. Make the necessary modifications to EchoServerTCP.java and EchoClientTCP.java so that they behave the same way as does your solution to Task 3. Rename these files "RemoteVariableClientTCP.java" and "RemoteVariableServerTCP.java".
+
+EchoServerTCP.java from Coulouris text
 
 ```
 import java.net.*;
@@ -219,7 +303,7 @@ public class EchoServerTCP {
 }
 ```
 
-EchoClientTCP.java
+EchoClientTCP.java from Coulouris text
 
 ```
 import java.net.*;
@@ -261,7 +345,7 @@ public class EchoClientTCP {
 }
 ```
 
-As in Task 3, be sure to use a **proxy design** to encapsulate the communication code. This requires a re-organization of the code but it is important to separate concerns.
+1. As in Task 3, be sure to use a **proxy design** to encapsulate the communication code. This requires a re-organization of the code but it is important to separate concerns.
 
 Produce a screen shot illustrating a successful execution and submit the screenshot in the description folder as described at the end of this document. The screenshot will show three different clients interacting with the server using three distinct ID&#39;s.
 
@@ -281,20 +365,23 @@ This Task is modeled after the way an Ethereum blockchain client signs requests.
 
 Make the following modifications to your work in Task 4.
 
-1. Each time the client program runs, it will create new RSA public and private keys and **display** these keys to the user. See RSAExample.java below for guidance on how to build these keys. After the client program creates and displays these keys, it interacts with the user and the server.
-2. The client&#39;s ID will be formed by taking the least significant 20 bytes of the hash of the client&#39;s public key. Note: an RSA public key is the pair e and n. Prior to hashing, you will combine these two integers with concatenation. Unlike in Task 4, we are no longer prompting the user to enter the ID – the ID is computed in the client code. It is derived from the public key.
-3. As before, the client will be interactive and menu driven. It will transmit add or subtract or view requests to the server, along with the ID computed in (2) and an option to exit.
-4. The client will also transmit its public key with each request. Again, note that this key is a combination of e and n. These values will be transmitted in the clear and will be used by the server.
-5. Finally, the client will sign each request. So, by using its private key (d and n), the client will encrypt the hash of the message it sends to the server. The signature will be added to each request. It is very important that the big integer created with the hash (before signing) is positive. See details in the code of ShortMessageSign.java and ShortMessageVerify.java below.
+0. Rename these files "SigningClientTCP.java" and "VerifyingServerTCP.java".
+
+1. As before, the client will be interactive and menu driven. It will transmit add or subtract or view requests to the server, along with the ID computed in 3 below, and provide an option to exit.
+
+2. We want to send signed request from the client. Each time the client program runs, it will create new RSA public and private keys and **display** these keys to the user. See the RSAExample.java program below for guidance on how to build these keys. It is fine to use the code that you find in RSAExample.java (with citations, of course). After the client program creates and displays these keys, it interacts with the user and the server.
+3. The client&#39;s ID will be formed by taking the least significant 20 bytes of the hash of the client&#39;s public key. Note: an RSA public key is the pair e and n. Prior to hashing, you will combine these two integers with concatenation. Unlike in Task 4, we are no longer prompting the user to enter the ID – the ID is computed in the client code. As in Bitcoin or Ethereum, the user's ID is derived from the public key.
+
+4. The client will also transmit its public key with each request. Again, note that this key is a combination of e and n. These values will be transmitted in the clear and will be used by the server to verify the signature.
+
+5. Finally, the client will sign each request. So, by using its private key (d and n), the client will encrypt the hash of the message it sends to the server. The signature will be added to each request. It is very important that the big integer created with the hash (before signing) is positive. RSA does not work with negative integers. See details in the code of ShortMessageSign.java and ShortMessageVerify.java below. You may use this code if cited.
+
 6. The server will make two checks before servicing any client request. First, does the public key (included with each request) hash to the ID (also provided with each request)? Second, is the request properly signed? If both of these are true, the request is carried out on behalf of the client. The server will add, subtract or view. Otherwise, the server returns the message &quot;Error in request&quot;.
 7. By studying ShortMessageVerify.java and ShortMessageSign.java you will know how to compute a signature. Your solution, however, will not use the short message approach as exemplified there. Note that we are not using any Java crypto API&#39;s that abstract away the details of signing.
 8. We will use SHA-256 for our hash function h(). To clarify further:
 
-The client will send the id: last20BytesOf(h(e+n)), the public key: e and n in the clear, the operation (add, view, or subtract), the operand, and the signature
-
-E(h(all prior tokens),d). The signature is thus an encrypted hash. It is encrypted
-
-using d and n - the client&#39;s private key. E represents standard RSA encryption. The function h(e+n) is the hash of e concatenated with n.
+The client will send the id: last20BytesOf(h(e+n)), the public key: e and n in the clear, the operation (add, view, or subtract), the operand, and the signature E(h(all prior tokens),d). The signature is thus an encrypted hash. It is encrypted
+using d and n - the client&#39;s private key. E represents standard RSA encryption. The function h(e+n) is the SHA-256 hash of e concatenated with n.
 
 During one client session, the ID will always be the same. If the client quits and restarts, it will have a new ID and operate on a new sum. The server is left running and survives client restarts.
 
@@ -310,7 +397,7 @@ Alternatively, you can create a screencast video of your working client and serv
 - Include the URL of the YouTube video in a document in the Project2Task5 Description folder that you submit.
 - The video will show three different clients interacting with the server using three distinct ID&#39;s.
 
-RSAExample.java
+RSAExample.java - Key generation and sample encryption and decryption
 
 ```
 /* Demonstrate RSA in Java using BigIntegers */
@@ -319,7 +406,7 @@ import java.math.BigInteger;
 import java.util.Random;
 ​
 /**
- *  RSA Algorithm from CLR
+ *  RSA Algorithm from CLR Algorithms text
  *
  * 1. Select at random two large prime numbers p and q.
  * 2. Compute n by the equation n = p * q.
@@ -394,7 +481,7 @@ public class RSAExample {
 
 ```
 
-ShortMessageSign.java
+ShortMessageSign.java - Signing
 
 ```
 import java.math.BigInteger;
@@ -527,7 +614,7 @@ public class ShortMessageSign {
 }
 
 ```
-ShortMessageVerify
+ShortMessageVerify - Signature verification
 
 ```
 import java.math.BigInteger;
@@ -707,7 +794,7 @@ Project2Task4.zip
 
 Project2Task5.zip
 
-Create a new empty folder named with your Andrew id (very important). Put all files mentioned above into this new folder.
+Create a new empty folder named with your Andrew id - [your andrew id]Project2.zip. Mine would be mm6Project2.zip.  Put all files mentioned above into this new folder.
 
 Zip that folder, and submit it to Canvas. The submission should be a single zip file.
 
@@ -715,7 +802,8 @@ Now you should have only one zip file named with your Andrew id.
 
 Submission File Structure:
 
-The file named **YourAndrewID.zip** contains:
+The file named **YourAndrewIDProject2.zip** contains:
+
 ##### Project2Task1.zip
 ##### Project2Task2.zip
 ##### Project2Task3.zip
