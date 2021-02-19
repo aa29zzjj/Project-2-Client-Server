@@ -11,9 +11,7 @@
 Our **first objective** is for you to be able to work with client side and server side UDP and TCP sockets.
 Our **second objective** is to understand the differences (at the programming level) between the TCP and UDP protocols.
 
-In this project, you will also explore Remote Procedure Calls (RPC's) and Digital Signatures.
-
-So, our **third objective** is for you to understand the abstraction provided by RPC. We do this by asking that you use a proxy design and hide communication code and keep it separate from your application code. And, our **fourth objective** is to expose you to some of the mechanics behind RSA digital signatures.
+Our **third objective** is for you to understand the abstraction provided by Remote Procedure Calls (RPC). We do this by asking that you use a proxy design and hide communication code and keep it separate from your application code. And, our **fourth objective** is to expose you to some of the mechanics behind RSA digital signatures.
 
 There are five separate and distinct tasks in Project 2.
 
@@ -28,6 +26,8 @@ In addition, for all of what follows, we are assuming that the server is run bef
 In this assignment, you need not be concerned with data validation. You may assume that the data entered by users is correctly formatted.
 
 In general, if these requirements do not explicitly ask for a certain feature, then you are not required to provide that feature. No additional points are awarded for extra features.
+
+If you use any code that is not yours, you are required to clearly cite the source - a full URL where appropriate. 
 
 ## Task 1 Use the IntelliJ Project Name "Project2Task1".
 
