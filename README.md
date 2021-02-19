@@ -27,7 +27,7 @@ In this assignment, you need not be concerned with data validation. You may assu
 
 In general, if these requirements do not explicitly ask for a certain feature, then you are not required to provide that feature. No additional points are awarded for extra features.
 
-If you use any code that is not yours, you are required to clearly cite the source - a full URL where appropriate. 
+If you use any code that is not yours, you are required to clearly cite the source - a full URL where appropriate.
 
 ## Task 1 Use the IntelliJ Project Name "Project2Task1".
 
@@ -107,7 +107,7 @@ public class EchoClientUDP{
 5. On the server, examine the length of the requestString and note that it is too large. Make modifications to the server code so that the request data is copied to an array with the correct number of bytes. Use this array of bytes to build a requestString of the correct size. Without these modifications, incorrect data may be displayed on the server. Upon each visit, your server will display the request arriving from the client.
 6. If the client enters the command &quot;stop!&quot;, both the client and the server will halt execution. When the client program receives &quot;stop!&quot; from the user, it sends &quot;stop!&quot; to the sever and exits and does not wait for any reply.
 7. Add a line in the client so that it announces when it is quitting. It will write "Client side quitting" to the client side console.
-8. Add a line in the server so that it announces when it is quitting. The server only quits when it is told to do so by the client. It will write "Server side quitting" to the server side console.
+8. Add a line in the server so that it makes an announcement when it is quitting. The server only quits when it is told to do so by the client. It will write "Server side quitting" to the server side console.
 9. Note, in the remaining tasks (Tasks 2 through 5), we do not provide the client with the ability to stop the server. In those tasks, the server is left running - forever.
 
 Produce a screen shot illustrating a successful execution and submit the screenshot in the description folder as described at the end of this document. In the screenshot, use your name for the data that the client is reading from the keyboard and sending to the server. Also, show the client using the &quot;stop!&quot; option and show how the client and server respond.
