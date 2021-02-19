@@ -149,7 +149,7 @@ The server returned 10.
 stop!
 Client side quitting.
 
-If the client is restarted we have:
+If the client is restarted (note that the server is still running) we have:
 The client is running.
 1
 The server returned 11.
@@ -194,7 +194,7 @@ The result is 5.
 1. Add a value to your sum.
 2. Subtract a value from your sum.
 3. View your sum.
-4. Exit client
+4. Exit client.
 1
 Enter value to add:
 14
@@ -205,7 +205,7 @@ The result is 19.
 1. Add a value to your sum.
 2. Subtract a value from your sum.
 3. View your sum.
-4. Exit client
+4. Exit client.
 1
 Enter value to add:
 10
@@ -216,9 +216,19 @@ The result is 10.
 1. Add a value to your sum.
 2. Subtract a value from your sum.
 3. View your sum.
-4. Exit client
+4. Exit client.
+3
+Enter your ID:
+33
+The result is 19.
+
+1. Add a value to your sum.
+2. Subtract a value from your sum.
+3. View your sum.
+4. Exit client.
 4
-Client side quitting.
+Client side quitting. The remote variable server is still running.
+
 ```
 
 3. As you did in Task 2, use a proxy design to encapsulate the communication code.
