@@ -2,9 +2,9 @@
 
 ## Project 2 Client-Server Computing
 
-### Assigned: Friday, February 19, 2021
+### Assigned: Friday, September 24, 2021
 
-### Due: Friday March 5, 2021,11:59pm
+### Due: Friday October 8, 2021,11:59pm
 
 ### Learning Objectives:
 
@@ -27,7 +27,7 @@ In this assignment, you need not be concerned with data validation. You may assu
 
 In general, if these requirements do not explicitly ask for a certain feature, then you are not required to provide that feature. No additional points are awarded for extra features.
 
-If you use any code that is not yours, you are required to clearly cite the source - a full URL where appropriate.
+If you use any code that is not yours, you are required to clearly cite the source - include a full URL in a comment and place it just above the code that is copied.
 
 ## Task 1 Use the IntelliJ Project Name "Project2Task1".
 
@@ -62,7 +62,7 @@ public class EchoServerUDP{
 
 ```
 
-Note how the server uses a DatagramPacket to receive data from a client (in the request object) and how it uses a DatagramPacket to send data back to the client (in the reply object). A DatagramPacket is always based on a byte array. So, to send a message in a DatagramPacket, we must first convert the message to a byte array. To receive a message from a DatagramPacket, we must convert the byte array to a message.
+Note how the server uses a DatagramPacket to receive data from a client (in the request object) and how it uses a DatagramPacket to send data back to the client (in the reply object). A DatagramPacket is always based on a byte array. So, to send a message in a DatagramPacket, we must first convert the message to a byte array. To receive a message from a DatagramPacket, we must convert the byte array to a String message.
 
 Note below how the client does the same thing. The client wants to send a String message. So, it extracts a byte array from the String (the variable m). And we then use m to build the DatagramPacket.
 
@@ -105,6 +105,7 @@ public class EchoClientUDP{
 3. Add a line at the top of the client so that it announces, by printing a message, &quot;The client is running.&quot; at start up.
 4. Add a line at the top of the server so that it announces &quot;The server is running.&quot; at start up.
 5. On the server, examine the length of the requestString and note that it is too large. Make modifications to the server code so that the request data is copied to an array with the correct number of bytes. Use this array of bytes to build a requestString of the correct size. Without these modifications, incorrect data may be displayed on the server. Upon each visit, your server will display the request arriving from the client.
+6. Do the same on the client side to properly handle the response.
 6. If the client enters the command &quot;stop!&quot;, both the client and the server will halt execution. When the client program receives &quot;stop!&quot; from the user, it sends &quot;stop!&quot; to the sever and exits and does not wait for any reply.
 7. Add a line in the client so that it announces when it is quitting. It will write "Client side quitting" to the client side console.
 8. Add a line in the server so that it makes an announcement when it is quitting. The server only quits when it is told to do so by the client. It will write "Server side quitting" to the server side console.
@@ -112,13 +113,7 @@ public class EchoClientUDP{
 
 Produce a screen shot illustrating a successful execution and submit the screenshot in the description folder as described at the end of this document. In the screenshot, use your name for the data that the client is reading from the keyboard and sending to the server. Also, show the client using the &quot;stop!&quot; option and show how the client and server respond.
 
-Alternatively, you can create a screencast video of your working client and server.
 
-- The video cannot be more than 3 minutes long.
-- You may use an audio voiceover, but you do not need to.
-- You should publish the video as &#39;Unlisted&#39; to YouTube. (See more discussion on this in the Submission section below.)
-- Include the URL of the YouTube video in a document in the Project2Task1 Description folder that you submit.
-- In the video, use your name for the data that the client is reading from the keyboard and sending to the server.
 
 ## Task 2 Use the IntelliJ Project Name "Project2Task2"
 
@@ -162,12 +157,6 @@ Note: UDP messages are made up of byte arrays. You will need to take an int and 
 
 Produce a screen shot illustrating a successful execution (client and server) and submit the screenshot in the description folder as described at the end of this document.
 
-Alternatively, you can create a screencast video of your working client and server.
-
-- The video cannot be more than 3 minutes long.
-- You may use an audio voiceover, but you do not need to.
-- You should publish the video as &#39;Unlisted&#39; to YouTube. (See more discussion on this in the Submission section below.)
-- Include the URL of the YouTube video in a document in the Project2Task2 Description folder that you submit.
 
 ## Task 3 Use the IntelliJ Project Name "Project2Task3"
 
@@ -235,13 +224,7 @@ Client side quitting. The remote variable server is still running.
 
 Produce a screen shot illustrating a successful execution and submit the screenshot in the description folder as described at the end of this document. Show three different clients interacting with the server using three distinct ID&#39;s.
 
-Alternatively, you can create a screencast video of your working client and server.
 
-- The video cannot be more than 3 minutes long.
-- You may use an audio voiceover, but you do not need to.
-- You should publish the video as &#39;Unlisted&#39; to YouTube. (See more discussion on this in the Submission section below.)
-- Include the URL of the YouTube video in a document in the Project2Task3 Description folder that you submit.
-- The video will show three different clients interacting with the server using three distinct ID&#39;s.
 
 ## Task 4 Use the IntelliJ Project Name "Project2Task4"
 
@@ -359,13 +342,7 @@ public class EchoClientTCP {
 
 Produce a screen shot illustrating a successful execution and submit the screenshot in the description folder as described at the end of this document. The screenshot will show three different clients interacting with the server using three distinct ID&#39;s.
 
-Alternatively, you can create a screencast video of your working client and server.
 
-- The video cannot be more than 3 minutes long.
-- You may use an audio voiceover, but you do not need to.
-- You should publish the video as &#39;Unlisted&#39; to YouTube. (See more discussion on this in the Submission section below.)
-- Include the URL of the YouTube video in a document in the Project2Task4 Description folder that you submit.
-- The video will show three different clients interacting with the server using three distinct ID&#39;s.
 
 ## Task 5 Use the IntelliJ Project Name "Project2Task5"
 
@@ -398,14 +375,6 @@ During one client session, the ID will always be the same. If the client quits a
 As before, use a **proxy design** to encapsulate the communication code.
 
 Produce a screen shot illustrating a successful execution and submit the screenshot in the description folder as described at the end of this document. The screen shot will show three different clients interacting with the server using three distinct ID&#39;s.
-
-Alternatively, you can create a screencast video of your working client and server.
-
-- The video cannot be more than 3 minutes long.
-- You may use an audio voiceover, but you do not need to.
-- You should publish the video as &#39;Unlisted&#39; to YouTube. (See more discussion on this in the Submission section below.)
-- Include the URL of the YouTube video in a document in the Project2Task5 Description folder that you submit.
-- The video will show three different clients interacting with the server using three distinct ID&#39;s.
 
 RSAExample.java - Key generation and sample encryption and decryption
 
@@ -765,8 +734,6 @@ public class ShortMessageVerify {
 ## Summary &amp; Submission:
 
 Be sure to review the General Grading Rubric on Canvas.
-
-**Video sharing rights:** If you are creating screencast videos, then you should set the YouTube sharing rights &#39;Unlisted&#39; when publishing to YouTube. There are three types of sharing rights on YouTube: Public, Private and Unlisted. You do not want other students to be able to see your video (that would be cheating), and &#39;Unlisted&#39; restricts viewing to only those who have your URL.
 
 Be sure you have named your IntelliJ project folders correctly.
 
