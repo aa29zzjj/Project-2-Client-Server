@@ -775,7 +775,7 @@ public class ShortMessageVerify {
 }
 ```
 
-## Summary &amp; Submission:
+## Submission Summary:
 
 :checkered_flag: Submit to Canvas a single .pdf file named Your_Last_Name_First_Name_Project2.pdf. It is important that you ***clearly label*** each submission with the following labels. Be sure to provide your name and email address at the top of the .pdf file.
 
