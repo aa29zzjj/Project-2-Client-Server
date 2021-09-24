@@ -6,7 +6,7 @@
 
 ### Due: Friday October 8, 2021,11:59pm
 
-:checkered_flag: Submit to Canvas a single .pdf file named Your_Last_Name_First_Name_Project2.pdf. This single pdf will contain your responses to the questions marked with a checkered flag. It is important that you ***clearly label*** each answer with the project part number and that you provide your name and email address at the top of the .pdf.
+:checkered_flag: Submit to Canvas a single .pdf file named Your_Last_Name_First_Name_Project2.pdf. This single pdf will contain your responses to the questions marked with a checkered flag. It is important that you ***clearly label*** each answer with the labels provided below. It is also important to ***be prepared*** to demonstrate your working code if we need to verify your submission. Be sure to provide your name and email address at the top of the .pdf submission.
 
 ### Learning Objectives:
 
