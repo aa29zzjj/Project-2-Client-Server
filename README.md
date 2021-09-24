@@ -779,27 +779,52 @@ public class ShortMessageVerify {
 
 :checkered_flag: Submit to Canvas a single .pdf file named Your_Last_Name_First_Name_Project2.pdf. It is important that you ***clearly label*** each submission with the following labels. Be sure to provide your name and email address at the top of the .pdf file.
 
-Project2Task1Client
+Task 1
+---------------------
+Project2Task1Client  
+
 Project2Task1Server
+
 Project2Task1ClientScreen
+
 Project2Task1ServerScreen
 
+Task 2
+---------------------
 Project2Task2Client
+
 Project2Task2Server
+
 Project2Task2ClientScreen
+
 Project2Task2ServerScreen
 
-Project2Task3Client
-Project2Task3Server
+Task 3
+---------------------
+Project2Task3Client  
+
+Project2Task3Server  
+
 Project2Task3ClientScreen
+
 Project2Task3ServerScreen
 
+Task 4
+---------------------
 Project2Task4Client
+
 Project2Task4Server
+
 Project2Task4ClientScreen
+
 Project2Task4ServerScreen
 
+Task 5
+---------------------
 Project2Task5Client
+
 Project2Task5Server
+
 Project2Task5ClientScreen
+
 Project2Task5ServerScreen
