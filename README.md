@@ -6,7 +6,11 @@
 
 ### Due: Friday October 8, 2021,11:59pm
 
-:checkered_flag: Submit to Canvas a single .pdf file named Your_Last_Name_First_Name_Project2.pdf. This single pdf will contain your responses to the questions marked with a checkered flag. It is important that you ***clearly label*** each answer with the labels provided below. It is also important to ***be prepared*** to demonstrate your working code if we need to verify your submission. Be sure to provide your name and email address at the top of the .pdf submission.
+:checkered_flag: Submit to Canvas a single PDF file named Your_Last_Name_First_Name_Project2.pdf and a zip of each of the five projects below. The single PDF will contain your responses to the questions marked with a checkered flag. It is important that you ***clearly label*** each answer with the labels provided below. It is also important to ***be prepared*** to demonstrate your working code if we need to verify your submission. Be sure to provide your name and email address at the top of the .pdf submission.
+
+The five projects will be submitted as five zip files, each one will be the zip of your WHOLE IntelliJ project for tasks 1, 2, 3, 4 and 5. Each project will contain one client and one server. For each project, zip the whole project, you need to use "File->Export Project->To Zip" in IntelliJ.
+
+Zip the one PDF and the five project zip files into one big zip file for submission. Name this final file your_andrew_id.zip.
 
 ### Learning Objectives:
 
@@ -777,7 +781,7 @@ public class ShortMessageVerify {
 
 ## Submission Summary:
 
-:checkered_flag: Submit to Canvas a single .pdf file named Your_Last_Name_First_Name_Project2.pdf. It is important that you ***clearly label*** each submission with the following labels. Be sure to provide your name and email address at the top of the .pdf file.
+:checkered_flag: Submit to Canvas the single .pdf file named Your_Last_Name_First_Name_Project2.pdf. It is important that you ***clearly label*** each submission with the following labels. Be sure to provide your name and email address at the top of the .pdf file. See below for the final submission.
 
 Task 1
 ---------------------
@@ -828,3 +832,10 @@ Project2Task5Server
 Project2Task5ClientScreen
 
 Project2Task5ServerScreen
+
+Final Submission
+----------------------
+
+Create five zip files, each one of which is the zip of your WHOLE project for tasks 1, 2, 3, 4 and 5. Each project will contain one client and one server. For each project, zip the whole project, you need to use "File->Export Project->To Zip" in IntelliJ.
+
+Zip the one PDF and the five project zip files into one big zip file for submission. Name this file your_andrew_id.zip.
