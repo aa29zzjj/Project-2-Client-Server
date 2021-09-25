@@ -789,7 +789,7 @@ Finally, create five zip files, each one of which is the zip of your WHOLE proje
 
 Zip the one PDF and the five project zip files into one big zip file for submission. Name this file your_andrew_id.zip.
 
-These labels are required in your single PDF. 
+These labels are required in your single PDF.
 
 Task 1
 ---------------------
@@ -840,6 +840,3 @@ Project2Task5Server
 Project2Task5ClientScreen
 
 Project2Task5ServerScreen
-
-Final Submission
-----------------------
