@@ -783,7 +783,13 @@ public class ShortMessageVerify {
 
 ## Submission Summary:
 
-:checkered_flag: Submit to Canvas the single .pdf file named Your_Last_Name_First_Name_Project2.pdf. It is important that you ***clearly label*** each submission with the following labels. Be sure to provide your name and email address at the top of the .pdf file. See below for the final submission.
+:checkered_flag: Submit to Canvas the single PDF file named Your_Last_Name_First_Name_Project2.pdf. It is important that you ***clearly label*** each submission with the labels shown below. Be sure to provide your name and email address at the top of the .pdf file.
+
+Finally, create five zip files, each one of which is the zip of your WHOLE project for tasks 1, 2, 3, 4 and 5. Each project will contain one client and one server. For each project, zip the whole project, you need to use "File->Export Project->To Zip" in IntelliJ.
+
+Zip the one PDF and the five project zip files into one big zip file for submission. Name this file your_andrew_id.zip.
+
+These labels are required in your single PDF. 
 
 Task 1
 ---------------------
@@ -837,7 +843,3 @@ Project2Task5ServerScreen
 
 Final Submission
 ----------------------
-
-Create five zip files, each one of which is the zip of your WHOLE project for tasks 1, 2, 3, 4 and 5. Each project will contain one client and one server. For each project, zip the whole project, you need to use "File->Export Project->To Zip" in IntelliJ.
-
-Zip the one PDF and the five project zip files into one big zip file for submission. Name this file your_andrew_id.zip.
