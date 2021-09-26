@@ -156,14 +156,14 @@ The server returned 5.
 The server returned 4.
 6
 The server returned 10.
-stop!
+halt!
 Client side quitting.
 
 If the client is restarted (note that the server is still running) we have:
 The client is running.
 1
 The server returned 11.
-stop!
+halt!
 Client side quitting.
 
 ```
