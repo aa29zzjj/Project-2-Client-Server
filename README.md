@@ -833,60 +833,8 @@ public class ShortMessageVerify {
 
 ## Submission Summary:
 
-:checkered_flag: Submit to Canvas the single PDF file named Your_Last_Name_First_Name_Project2.pdf. It is important that you ***clearly label*** each submission with the labels shown below. Be sure to provide your name and email address at the top of the .pdf file.
+:checkered_flag: Submit to Canvas the single PDF file named Your_Last_Name_First_Name_Project2.pdf. It is important that you ***clearly label*** each submission. Be sure to provide your name and email address at the top of the .pdf file.
 
-Finally, create five zip files, each one of which is the zip of your WHOLE project for tasks 1, 2, 3, 4 and 5. Each project will contain one client and one server. For each project, zip the whole project, you need to use "File->Export Project->To Zip" in IntelliJ.
+Finally, create six zip files, each one of which is the zip of your WHOLE project for tasks 0, 1, 2, 3, 4 and 5. Each project will contain one client and one server (except for Task 1). For each project, zip the whole project, you need to use "File->Export Project->To Zip" in IntelliJ.
 
-Zip the one PDF and the five project zip files into one big zip file for submission. Name this file your_andrew_id.zip.
-
-These labels are required in your single PDF.
-
-Task 1
----------------------
-Project2Task1Client  
-
-Project2Task1Server
-
-Project2Task1ClientScreen
-
-Project2Task1ServerScreen
-
-Task 2
----------------------
-Project2Task2Client
-
-Project2Task2Server
-
-Project2Task2ClientScreen
-
-Project2Task2ServerScreen
-
-Task 3
----------------------
-Project2Task3Client  
-
-Project2Task3Server  
-
-Project2Task3ClientScreen
-
-Project2Task3ServerScreen
-
-Task 4
----------------------
-Project2Task4Client
-
-Project2Task4Server
-
-Project2Task4ClientScreen
-
-Project2Task4ServerScreen
-
-Task 5
----------------------
-Project2Task5Client
-
-Project2Task5Server
-
-Project2Task5ClientScreen
-
-Project2Task5ServerScreen
+Zip the one PDF and the six project zip files into one big zip file for submission. Name this file your_andrew_id.zip.
