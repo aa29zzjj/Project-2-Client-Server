@@ -2,46 +2,50 @@
 
 ## Project 2 Client-Server Computing
 
-### Assigned: Friday, September 24, 2021
+### Assigned: Friday, February 11, 2022
 
-### Due: Friday October 8, 2021,11:59pm
+### Due: Friday, February 25, 2022,11:59pm
 
-:checkered_flag: Submit to Canvas a single PDF file named Your_Last_Name_First_Name_Project2.pdf and a zip of each of the five projects (corresponding to the five tasks) below.
+:checkered_flag: Submit to Canvas a ***single PDF file*** named Your_Last_Name_First_Name_Project2.pdf and a zip of each of the six projects (corresponding to the six tasks) below.
 
 The single PDF will contain your responses to the questions marked with a checkered flag. It is important that you ***clearly label*** each answer with the labels provided below. It is also important to ***be prepared*** to demonstrate your working code if we need to verify your submission. Be sure to provide your name and email address at the top of the PDF submission.
 
-The five projects will be submitted as five zip files, each one will be the zip of your WHOLE IntelliJ project for tasks 1, 2, 3, 4 and 5. Each project will contain one client and one server. For each project, zip the whole project, you need to use "File->Export Project->To Zip" in IntelliJ.
+The six projects will be submitted as six zip files, each one will be the zip of your WHOLE IntelliJ project for tasks 0, 1, 2, 3, 4 and 5. Each IntelliJ project, except Task 1, will contain one client and one server. Task 1 will contain one client, one server, and one malicious player in the middle. For each project, zip the whole project, you need to use "File->Export Project->To Zip" in IntelliJ.
 
-When all of your work is complete, zip the one PDF and the five project zip files into one big zip file for submission. Name this final file your_andrew_id.zip.
+When all of your work is complete, zip the one PDF and the six project zip files into one big zip file for submission. Name this final file your_andrew_id.zip.
 
 ### Learning Objectives:
 
 Our **first objective** is for you to be able to work with client side and server side UDP and TCP sockets.
 
-Our **second objective** is to understand the differences (at the programming level) between the TCP and UDP protocols.
+Our **second objective** is to understand the implications of a malicious player in the middle.
 
-Our **third objective** is for you to understand the abstraction provided by Remote Procedure Calls (RPC). We do this by asking that you use a proxy design and hide communication code and keep it separate from your application code. And, our **fourth objective** is to expose you to some of the mechanics behind RSA digital signatures.
+Our **third objective** is to understand the differences (at the programming level) between the TCP and UDP protocols.
 
-There are five separate and distinct tasks in Project 2.
+Our **fourth objective** is for you to understand the abstraction provided by Remote Procedure Calls (RPC's). We do this by asking that you use a proxy design and hide communication code and keep it separate from your application code. And, our **fifth objective** is to expose you to digital signatures and their implementation in RSA.
 
-When you are asked to submit Java code (on the single pdf) software documentation is required. Points will be deducted if code is not well documented. Each significant block of code will contain a comment describing what the block of code is being used for.
+There are six separate and distinct tasks in Project 2.
 
-See the General Course Rubric (on Canvas). It will be applied to a subset of these five tasks.
+When you are asked to submit Java code (on the single pdf) software documentation is required. Points will be deducted if code is not well documented. Each significant block of code will contain a comment describing what the block of code is being used for. See Canvas/Home/Documentation for an example of good documentation.
+
+See the General Course Rubric (on Canvas). We will use a specific, unpublished rubric for this assignment but the general rubric provides rough guidance on how this assignment will be evaluated.
 
 In all of what follows, we are concerned with designing servers to handle one client at a time. We are not exploring the important issues surrounding multiple, simultaneous visitors. If you write a multi-threaded server to handle several visitors at once, that is great but is not required. It gains no additional credit.
 
 In addition, for all of what follows, we are assuming that the server is run before the client is run. If you want to handle the case where the client is run first, without a running server, that is great but will receive no additional credit.
 
+In Task 1, we are assuming that the server is run before the malicious player and the malicious player is run before the client.
+
 In this assignment, you need not be concerned with data validation. You may assume that the data entered by users is correctly formatted.
 
 In general, if these requirements do not explicitly ask for a certain feature, then you are not required to provide that feature. No additional points are awarded for extra features.
 
-If you use any code that is not yours, you are required to clearly cite the source - include a full URL in a comment and place it just above the code that is copied.
+If you use any code that is not yours, you are required to clearly cite the source - include a full URL in a comment and place it just above the code that is copied. Be careful to cite your sources.
 
-## Task 1 Use the IntelliJ Project Name "Project2Task1".
+## Task 0 Use the IntelliJ Project Name "Project2Task0".
 
-In Task 1, you will make several modifications to EchoServerUDP.java and EchoClientUDP.java. Note that
-these two programs are standard Java and we do not need to construct a web application in IntelliJ. Both of these programs may be placed in the same IntelliJ project.
+In Task 0, you will make several modifications to EchoServerUDP.java and EchoClientUDP.java. Note that
+these two programs are standard Java and we do not need to construct a web application in IntelliJ. Both of these programs will be placed in the same IntelliJ project.
 
 EchoServerUDP.java from Coulouris text
 
@@ -71,7 +75,7 @@ public class EchoServerUDP{
 
 ```
 
-Note how the server uses a DatagramPacket to receive data from a client (in the request object) and how it uses a DatagramPacket to send data back to the client (in the reply object). A DatagramPacket is always based on a byte array. So, to send a message in a DatagramPacket, we must first convert the message to a byte array. To receive a message from a DatagramPacket, we must convert the byte array to a String message.
+Note the difference between a DatagramSocket and a DatagramPacket. The server uses a DatagramPacket to receive data from a client (in the request object). And it uses a DatagramPacket to send data back to the client (in the reply object). A DatagramPacket is always based on a byte array. So, to send a message in a DatagramPacket, we must first convert the message to a byte array. To receive a message from a DatagramPacket, we must convert the byte array to a String message (if we are expecting a String message).
 
 Note below how the client does the same thing. The client wants to send a String message. So, it extracts a byte array from the String (the variable m). And we then use m to build the DatagramPacket.
 
@@ -108,35 +112,57 @@ public class EchoClientUDP{
     }
 }
 ```
-0. Get these programs running in IntelliJ. The two programs are placed in the same Intellij project and you are provided with two windows to interact with the two programs.
+0. Get these programs running in IntelliJ. The two programs are placed in the same Intellij project and you are provided with two windows to interact with the two programs. Make the following modifications to the client and the server.
 1. Change the client&#39;s &quot;arg[0]&quot; to a hardcoded &quot;localhost&quot;.
 2. Document the client and the server. Describe what each line of code does.
 3. Add a line at the top of the client so that it announces, by printing a message, &quot;The client is running.&quot; at start up.
-4. Add a line at the top of the server so that it announces &quot;The server is running.&quot; at start up.
-5. On the server, examine the length of the requestString and note that it is too large. Make modifications to the server code so that the request data is copied to an array with the correct number of bytes. Use this array of bytes to build a requestString of the correct size. Without these modifications, incorrect data may be displayed on the server. Upon each visit, your server will display the request arriving from the client.
-6. Do the same on the client side to properly handle the response.
-7. If the client enters the command &quot;halt!&quot;, both the client and the server will halt execution. When the client program receives &quot;halt!&quot; from the user, it sends &quot;halt!&quot; to the sever and exits and does not wait for any reply.
-8. Add a line in the client so that it announces when it is quitting. It will write "Client side quitting" to the client side console.
-9. Add a line in the server so that it makes an announcement when it is quitting. The server only quits when it is told to do so by the client. It will write "Server side quitting" to the server side console.
-10. Add code to the server so that it will display the port number that the server is sending data to. This is the port number that the client is listening on. On each request by the client, the server will display this outgoing port number on the server console.
+4. After the announcement that the client is running, have the client prompt the user for the server side port number. It will then use that port number to contact the server.
+5. Add a line at the top of the server so that it announces &quot;The server is running.&quot; at start up.
+6. After the announcement that the server is running, have the server prompt the user for the port number that the server is supposed to listen on. Enter 6789 when prompted.
+7. On the server, examine the length of the requestString and note that it is too large. Make modifications to the server code so that the request data is copied to an array with the correct number of bytes. Use this array of bytes to build a requestString of the correct size. Without these modifications, incorrect data may be displayed on the server. Upon each visit, your server will display the request arriving from the client.
+8. Do the same on the client side to properly handle the size of the response.
+9. If the client enters the command &quot;halt!&quot;, both the client and the server will halt execution. When the client program receives &quot;halt!&quot; from the user, it sends &quot;halt!&quot; to the sever and after hearing the &quot;halt!&quot; message from the server, the client exits. When the server receives &quot;halt!&quot; from the client, it will respond to the client with &quot;halt!&quot; and then exit.
+10. Add a line in the client so that it announces when it is quitting. It will write "Client side quitting" to the client side console.
+11. Add a line in the server so that it makes an announcement when it is quitting. The server only quits when it is told to do so by the client (and has just responded to the client with the &quot;halt!&quot; message). It will write "Server side quitting" to the server side console.
 
-:checkered_flag:**On your single pdf, make a copy of your client and label it clearly as "Project2Task1Client".**
+:checkered_flag:**On your single pdf, make a copy of your client and label it clearly as "Project2Task0Client".**
 
-:checkered_flag:**On your single pdf, make a copy of your server and label it clearly as "Project2Task1Server".**
+:checkered_flag:**On your single pdf, make a copy of your server and label it clearly as "Project2Task0Server".**
 
-:checkered_flag:**Make a screenshot of your client console screen. It will include five lines of data sent by the client to the server and the client's response to a request by the user to &quot;halt!&quot;. On your single pdf, label this screenshot as "Project2Task1ClientScreen".**
+:checkered_flag:**Make a screenshot of your client console screen. It will include five lines of data sent by the client to the server and the client's response to a request by the user to &quot;halt!&quot;. On your single pdf, label this screenshot as "Project2Task0ClientConsole".**
 
-:checkered_flag:**Make a screenshot of your server console screen. It will include five lines of data sent by the client, the port number that the client is using to receive the response, and the server's response to the &quot;halt!&quot; request by the client.On your single pdf, label this screenshot as "Project2Task1ServerScreen".**
+:checkered_flag:**Make a screenshot of your server console screen. It will include five lines of data sent by the client and the server's response to the &quot;halt!&quot; request by the client. On your single pdf, label this screenshot as "Project2Task0ServerConsole".**
 
-In the remaining tasks (Tasks 2 through 5), we do not provide the client with the ability to stop the server. We are doing that only in Task 1. In the remaining Tasks, the server is left running - forever.
+
+## Task 1 Use the IntelliJ Project Name "Project2Task1".
+
+In Task 1, you will experiment with a malicious player in the middle attack. This malicious player is only interested in eavesdropping on the conversation between the client and the server. It is passive. Other malicious players actually modify the data as it goes through. These are active malicious players. Here, we are interested in only the passive type of malicious player.
+
+All three of these programs will be placed in the same IntelliJ project.
+
+Name your malicious player EvesDropperUDP.java.
+
+First, run EchoServerUDP.java as it has been modified in Task 0. EchoServerUDP will prompt you for its port. Enter the port 6789 for EchoServer to listen on.
+
+Second, run EvesDropperUDP.java. EvesDropperUDP will ask you for two ports. One port will be the port that the EvesDropperUDP.java will listen on and the other port will be the port number of the server that EvesDropper.java is masquerading as. We want EavesDropper.java to display all messages that go through it. We want it to eavesdrop on the wire. It will be masquerading as the server on port 6789. It will listen on port 6798 - hoping a foolish client makes a transposition error.
+
+Third, when you run EchoClientUDP.java, provide it with either the correct port (of the real server) or the port that EvesDropper is listening on. That is, provide it with either 6789 or 6798.  
+
+The EvesDropper does not halt when the client says &quot;halt!&quot;. It displays the message to its console and simply passes the &quot;halt!&quot; message on to the server. Our malicious player runs forever.
+
+:checkered_flag:**On your single pdf, make a copy of your documented EvesDropperUDP.java program.
+
+:checkered_flag:**Make a screenshot showing your client, server, and eves dropper consoles. The shot will show five lines of data sent by the client and the server's response to the &quot;halt!&quot; request by the client. It will also show the eves dropper console - showing the entire interaction between the client and the server. On your single pdf, label this screenshot as "Project2Task1ThreeConsoles".**
+
+In the remaining tasks (Tasks 2 through 5), we do not provide the client with the ability to stop the server. We are doing that only in Tasks 0 and 1. In the remaining Tasks, the server is left running - forever. In the remaining tasks, we are not using an evesdropper.
 
 ## Task 2 Use the IntelliJ Project Name "Project2Task2"
 
-Make the following modifications to the original "EchoServerUDP.java" and "EchoClientUDP.java":
+Make the following modifications to "EchoServerUDP.java" and "EchoClientUDP.java":
 
 0. Name the client "AddingClientUDP.java". Name the server "AddingServerUDP.java".
 1. The server will hold an integer value sum, initialized to 0, and will receive requests from the client - each of which includes an integer value (positive or negative or 0) to be added to the sum. Upon each request, the server will return the new sum as a response to the client. On the server side console, upon each visit by the client, the client's request and the new sum will be displayed.
-2. Separate concerns on the client. On the client, all of the communication code will be placed in a method named &quot;add&quot;. In other words, the main method of the client will have no code related to interacting with the server. Instead, the main routine will simply call a local method named &quot;add&quot;. The &quot;add&quot; method will not perform any addition, instead, it will request that the server perform the addition. The &quot;add&quot; method will encapsulate or hide all communication with the server. It is within the &quot;add&quot; method where we actually work with sockets. This is a variation of what is called a &quot;proxy design&quot;. The &quot;add&quot; method is serving as a proxy for the server. When your code makes a call on the local "add" method, you are actually making a remote procedure call (RPC). The client side &quot;add&quot; method has the following signature:
+2. Separate concerns on the client. On the client, all of the communication code will be placed in a method named &quot;add&quot;. In other words, the main method of the client will have no code related to client server communications. Instead, the main routine will simply call a local method named &quot;add&quot;. The client side &quot;add&quot; method will not perform any addition, instead, it will request that the server perform the addition. The &quot;add&quot; method will encapsulate or hide all communication with the server. It is within the &quot;add&quot; method where we actually work with sockets. This is a variation of what is called a &quot;proxy design&quot;. The &quot;add&quot; method is serving as a proxy for the server. When your code makes a call on the local "add" method, you are actually making a remote procedure call (RPC). The client side &quot;add&quot; method has the following signature:
 
 ```
 public static int add(int i)
@@ -148,6 +174,9 @@ public static int add(int i)
 
 ```
 The client is running.
+Please enter server port:
+6789
+
 3
 The server returned 3.
 2
@@ -161,6 +190,8 @@ Client side quitting.
 
 If the client is restarted (note that the server is still running) we have:
 The client is running.
+Please enter server port:
+6789
 1
 The server returned 11.
 halt!
@@ -182,28 +213,34 @@ etc...
 
 ```
 
-Note: UDP messages are made up of byte arrays. You will need to take an int and place it into a four byte byte array before sending. When receiving, you will need to extract an int from the byte array. You may use code from external sources to help you do this. But be careful to site your sources with a clear URL.
+Note: UDP messages are made up of byte arrays. You will need to take an int and place it into a four byte (32 bit) byte array before sending. When receiving, you will need to extract an int from the byte array. You may use code from external sources to help you do this. But be careful to site your sources with a clear URL.
+
+Another approach would be to only transmit byte arrays containing String data. You may use either approach.
 
 :checkered_flag:**On your single pdf, make a copy of your client and label it clearly as "Project2Task2Client".**
 
 :checkered_flag:**On your single pdf, make a copy of your server and label it clearly as "Project2Task2Server".**
 
-:checkered_flag:**Take a screenshot of your client console screen. It will include five integer inputs (1,2,3,4, and 5) and show the sums as they arrive back from the server. It will also show the client being stopped, and re-run a second time with the inputs (6,7,8,9, and 10) and the client's response to a request by the user to &quot;halt!&quot;. On your single pdf, label this screenshot as "Project2Task2ClientScreen".**
+:checkered_flag:**Take a screenshot of your client console screen. It will include five integer inputs (1,2,-3,4, and 5) and show the sums as they arrive back from the server. It will also show the client being stopped, and re-run a second time with the inputs (6,7,-8,9, and 10) and the client's response to a request by the user to &quot;halt!&quot;. On your single pdf, label this screenshot as "Project2Task2ClientConsole".**
 
-:checkered_flag:**Take a screenshot of your server console screen. It will include the 10 lines of data being sent by the client and the server's responses. On your single pdf, label this screenshot as "Project2Task2ServerScreen".**
+:checkered_flag:**Take a screenshot of your server console screen. It will include the 10 lines of data being sent by the client and the server's responses. On your single pdf, label this screenshot as "Project2Task2ServerConsole".**
 
 
 ## Task 3 Use the IntelliJ Project Name "Project2Task3"
 
 0. Name the client "RemoteVariableClientUDP.java". Name the server "RemoteVariableServerUDP.java".
 
-1. Modify your work in Task 2 so that the client may request either an &quot;add&quot; or &quot;subtract&quot; or &quot;get&quot; operation be performed by the server. The &quot;add&quot; and &quot;subtract&quot; operations are not idempotent but the &quot;get&quot; operation is idempotent. In addition, each request will pass along an integer ID. This ID is used to uniquely identify the user. Thus, the client will form a packet with the following values: ID, operation (add or subtract or get), and value (if the operation is other than get). The server will carry out the correct computation (add or subtract or get) using the sum associated with the ID found in each request. The client will be menu driven and will repeatedly ask the user for the user ID, operation, and value (if not a get request). When the operation is &quot;get&quot;, the value held on the server is simply returned. When the operation is &quot;add&quot; or &quot;subtract&quot; the server performs the operation and returns the sum. During execution, the client will display each returned value from the server to the user. If the server receives an ID that it has not seen before, that ID will initially be associated with a sum of 0. ID's will range between 1000 and 1999.
+1. Modify your work in Task 2 so that the client may request either an &quot;add&quot; or &quot;subtract&quot; or &quot;get&quot; operation be performed by the server. The &quot;add&quot; and &quot;subtract&quot; operations are not idempotent but the &quot;get&quot; operation is idempotent. In addition, each request will pass along an integer ID. This ID is used to uniquely identify the user. Thus, the client will form a packet with the following values: ID, operation (add or subtract or get), and value (if the operation is other than get). The server will carry out the correct computation (add or subtract or get) using the sum associated with the ID found in each request. The client will be menu driven and will repeatedly ask the user for the user ID, operation, and value (if not a get request). When the operation is &quot;get&quot;, the value held on the server is simply returned. When the operation is &quot;add&quot; or &quot;subtract&quot; the server performs the operation and returns the sum. During execution, the client will display each returned value from the server to the user. If the server receives an ID that it has not seen before, that ID will initially be associated with a sum of 0. ID's will range between 0 and 999.
 
-2. On the server, you will need to map each ID to the value of a sum. Different ID&#39;s may be presented and each will have its own sum. The server is given no prior knowledge of what ID&#39;s will be transmitted to it by the client. You may only assume that ID&#39;s are positive integers. You are required to store each ID and its associated sum, in a Java HashMap.
+2. On the server, you will need to map each ID to the value of a sum. Different ID&#39;s may be presented and each will have its own sum. The server is given no prior knowledge of what ID&#39;s will be transmitted to it by the client. You may only assume that ID&#39;s are positive integers. You are required to store each ID and its associated sum, in a Java TreeMap.
 
 The client side menu will provide an option to exit the client. Exiting the client has no impact on the server. Here is an example client side interaction:
 
 ```
+The client is running.
+Please enter server port:
+6789
+
 1. Add a value to your sum.
 2. Subtract a value from your sum.
 3. Get your sum.
@@ -212,7 +249,7 @@ The client side menu will provide an option to exit the client. Exiting the clie
 Enter value to add:
 5
 Enter your ID:
-1002
+102
 The result is 5.
 
 1. Add a value to your sum.
@@ -223,7 +260,7 @@ The result is 5.
 Enter value to add:
 14
 Enter your ID:
-1002
+102
 The result is 19.
 
 1. Add a value to your sum.
@@ -234,7 +271,7 @@ The result is 19.
 Enter value to add:
 10
 Enter your ID:
-1999
+199
 The result is 10.
 
 1. Add a value to your sum.
@@ -243,8 +280,19 @@ The result is 10.
 4. Exit client.
 3
 Enter your ID:
-1002
+102
 The result is 19.
+
+1. Add a value to your sum.
+2. Subtract a value from your sum.
+3. Get your sum.
+4. Exit client.
+2
+Enter value to subtract:
+-3
+Enter your ID:
+199
+The result is 13.
 
 1. Add a value to your sum.
 2. Subtract a value from your sum.
@@ -261,9 +309,9 @@ Client side quitting. The remote variable server is still running.
 
 :checkered_flag:**On your single pdf, make a copy of your server and label it clearly as "Project2Task3Server".**
 
-:checkered_flag:**Take a screenshot of your client console screen. Show three different clients interacting with the server using three distinct ID&#39;s. Each client will perform one addition, one subtraction, and finally a get request. It will also show the client being stopped, and re-run a second time with get requests from each of the three clients.  On your single pdf, label this screenshot as "Project2Task3ClientScreen".**
+:checkered_flag:**Take a screenshot of your client console screen. Show three different clients interacting with the server using three distinct ID&#39;s. Each client will perform one addition, one subtraction, and finally a get request. It will also show the client being stopped, and re-run a second time with get requests from each of the three clients.  On your single pdf, label this screenshot as "Project2Task3ClientConsole".**
 
-:checkered_flag:**Take a screenshot of your server console screen. It will show each visitor's ID, the operation requested, and the value of the variable being returned. On your single pdf, label this screenshot as "Project2Task3ServerScreen".**
+:checkered_flag:**Take a screenshot of your server console. It will show each visitor's ID, the operation requested, and the value of the variable being returned. On your single pdf, label this screenshot as "Project2Task3ServerConsole".**
 
 ## Task 4 Use the IntelliJ Project Name "Project2Task4"
 
@@ -382,9 +430,9 @@ public class EchoClientTCP {
 
 :checkered_flag:**On your single pdf, make a copy of your server and label it clearly as "Project2Task4Server".**
 
-:checkered_flag:**Take a screenshot of your client console screen. Show three different clients interacting with the server using three distinct ID&#39;s. Each client will perform one addition, one subtraction, and finally a get request. It will also show the client being stopped, and re-run a second time with get requests from each of the three clients.  On your single pdf, label this screenshot as "Project2Task4ClientScreen".**
+:checkered_flag:**Take a screenshot of your client console screen. Show three different clients interacting with the server using three distinct ID&#39;s. Each client will perform one addition, one subtraction, and finally a get request. It will also show the client being stopped, and re-run a second time with get requests from each of the three clients.  On your single pdf, label this screenshot as "Project2Task4ClientConsole".**
 
-:checkered_flag:**Take a screenshot of your server console screen. It will show each visitor's ID, the operation requested, and the value of the variable being returned. On your single pdf, label this screenshot as "Project2Task4ServerScreen".**
+:checkered_flag:**Take a screenshot of your server console screen. It will show each visitor's ID, the operation requested, and the value of the variable being returned. On your single pdf, label this screenshot as "Project2Task4ServerConsole".**
 
 ## Task 5 Use the IntelliJ Project Name "Project2Task5"
 
@@ -397,6 +445,8 @@ Make the following modifications to your work in Task 4.
 0. Rename these files "SigningClientTCP.java" and "VerifyingServerTCP.java".
 
 1. As before, the client will be interactive and menu driven. It will transmit add or subtract or get requests to the server, along with the ID computed in 3 below, and provide an option to exit.
+
+2. In the main method of the client side code, provide a brief description of the
 
 2. We want to send signed request from the client. Each time the client program runs, it will create new RSA public and private keys and **display** these keys to the user. See the RSAExample.java program below for guidance on how to build these keys. It is fine to use the code that you find in RSAExample.java (with citations, of course). After the client program creates and displays these keys, it interacts with the user and the server.
 3. The client&#39;s ID will be formed by taking the least significant 20 bytes of the hash of the client&#39;s public key. Note: an RSA public key is the pair e and n. Prior to hashing, you will combine these two integers with concatenation. Unlike in Task 4, we are no longer prompting the user to enter the ID – the ID is computed in the client code. As in Bitcoin or Ethereum, the user's ID is derived from the public key.
@@ -422,9 +472,9 @@ Produce a screen shot illustrating a successful execution and submit the screens
 
 :checkered_flag:**On your single pdf, make a copy of your server and label it clearly as "Project2Task5Server".**
 
-:checkered_flag:**Take a screenshot of your client console screen. Show a single client interacting with the server using the keys generated when the client code is run. All of the client's key material must be displayed on the client side console. Display the private key (d and n) and the public key (e and n). The client will perform one addition, one subtraction, and finally a get request. On your single pdf, label this screenshot as "Project2Task5ClientScreen".**
+:checkered_flag:**Take a screenshot of your client console screen. Show a single client interacting with the server using the keys generated when the client code is run. All of the client's key material must be displayed on the client side console. Display the private key (d and n) and the public key (e and n). The client will perform one addition, one subtraction, and finally a get request. On your single pdf, label this screenshot as "Project2Task5ClientConsole".**
 
-:checkered_flag:**Take a screenshot of your server console screen. It will show each visitor's public key material (e and n) and whether or not the signature is verified, the operation requested, and the value of the variable being returned. On your single pdf, label this screenshot as "Project2Task5ServerScreen".**
+:checkered_flag:**Take a screenshot of your server console screen. It will show each visitor's public key material (e and n) and whether or not the signature is verified, the operation requested, and the value of the variable being returned. On your single pdf, label this screenshot as "Project2Task5ServerConsole".**
 
 RSAExample.java - Key generation and sample encryption and decryption
 
