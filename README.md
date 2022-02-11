@@ -140,7 +140,7 @@ In Task 1, you will experiment with a malicious player in the middle attack. Thi
 
 All three of these programs will be placed in the same IntelliJ project.
 
-Name your malicious player DropperUDP.java.
+Name your malicious player EavesdropperUDP.java.
 
 First, run EchoServerUDP.java as it has been modified in Task 0. EchoServerUDP will prompt you for its port. Enter the port 6789 for EchoServer to listen on.
 
