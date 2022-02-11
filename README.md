@@ -140,17 +140,17 @@ In Task 1, you will experiment with a malicious player in the middle attack. Thi
 
 All three of these programs will be placed in the same IntelliJ project.
 
-Name your malicious player EavesdropperUDP.java.
+Name your malicious player EavesdropperUDP.java. You will need to design and write EavesdropperUDP.java as it is described below.
 
-First, run EchoServerUDP.java as it has been modified in Task 0. EchoServerUDP will prompt you for its port. Enter the port 6789 for EchoServer to listen on.
+First, run EchoServerUDP.java as it has been modified in Task 0. EchoServerUDP will prompt you for its port. Enter the port 6789 for EchoServerUDP to listen on.
 
-Second, run EavesDropperUDP.java. EavesDropperUDP will state that it is running and will ask you for two ports. One port will be the port that the EavesDropperUDP.java will listen on and the other port will be the port number of the server that EavesDropper.java is masquerading as. We want EavesDropper.java to display all messages that go through it. We want it to eavesdrop on the wire. It will be masquerading as the server on port 6789. It will listen on port 6798 - hoping a foolish client makes a transposition error.
+Second, run EavesdropperUDP.java. EavesdropperUDP will state that it is running and will ask you for two ports. One port will be the port that the EavesdropperUDP.java will listen on and the other port will be the port number of the server that Eavesdropper.java is masquerading as. We want Eavesdropper.java to display all messages that go through it. We want it to eavesdrop on the wire. It will be masquerading as the server on port 6789. It will listen on port 6798 - hoping a foolish client will make a transposition error.
 
-Third, when you run EchoClientUDP.java, provide it with either the correct port (of the real server) or the port that EavesDropper is listening on. That is, it will work with either 6789 or 6798.  
+Third, when you run EchoClientUDP.java, provide it with either the correct port (of the real server) or the port that Eavesdropper is listening on. That is, it will work with either 6789 or 6798.  
 
-The EavesDropper does not halt when the client says &quot;halt!&quot;. It displays the message to its console and simply passes the &quot;halt!&quot; message on to the server. Our malicious player runs forever.
+The Eavesdropper does not halt when the client says &quot;halt!&quot;. It displays the message to its console and simply passes the &quot;halt!&quot; message on to the server. The server will respond and then halt. The client will halt when it hears from the server. Our malicious player runs forever.
 
-:checkered_flag:**On your single pdf, make a copy of your documented EavesDropperUDP.java program.
+:checkered_flag:**On your single pdf, make a copy of your documented EavesdropperUDP.java program.
 
 :checkered_flag:**Make a screenshot showing your client, server, and Eavesdropper consoles. The shot will show a few lines of data sent by the client and the server's response to the &quot;halt!&quot; request by the client. It will also show the Eavesdropper console - showing the entire interaction between the client and the server. On your single pdf, label this screenshot as "Project2Task1ThreeConsoles". Be sure to show the client using port 6789 (correct server) and 6798 (malicious player). The idea is to provide screenshots that demonstrate that the client works against both servers.**
 
