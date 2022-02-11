@@ -116,7 +116,7 @@ public class EchoClientUDP{
 1. Change the client&#39;s &quot;arg[0]&quot; to a hardcoded &quot;localhost&quot;.
 2. Document the client and the server. Describe what each line of code does.
 3. Add a line at the top of the client so that it announces, by printing a message, &quot;The client is running.&quot; at start up.
-4. After the announcement that the client is running, have the client prompt the user for the server side port number. It will then use that port number to contact the server.
+4. After the announcement that the client is running, have the client prompt the user for the server side port number. It will then use that port number to contact the server. For now, enter 6789.
 5. Add a line at the top of the server so that it announces &quot;The server is running.&quot; at start up.
 6. After the announcement that the server is running, have the server prompt the user for the port number that the server is supposed to listen on. Enter 6789 when prompted.
 7. On the server, examine the length of the requestString and note that it is too large. Make modifications to the server code so that the request data is copied to an array with the correct number of bytes. Use this array of bytes to build a requestString of the correct size. Without these modifications, incorrect data may be displayed on the server. Upon each visit, your server will display the request arriving from the client.
