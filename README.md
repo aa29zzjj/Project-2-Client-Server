@@ -154,7 +154,7 @@ The Eavesdropper does not halt when the client says &quot;halt!&quot;. It displa
 
 :checkered_flag:**Make a screenshot showing your client, server, and eavesdropper consoles. The shot will show a few lines of data sent by the client and the server's response to the &quot;halt!&quot; request by the client. It will also show the eavesdropper console - showing the entire interaction between the client and the server. On your single pdf, label this screenshot as "Project2Task1ThreeConsoles". Be sure to show the client using port 6789 (correct server) and 6798 (malicious player). The idea is to provide screenshots that demonstrate that the client works against both servers.**
 
-In the remaining tasks (Tasks 2 through 5), we do not provide the client with the ability to stop the server. We are doing that only in Tasks 0 and 1. In the remaining Tasks, the server is left running - forever. In the remaining tasks, we are not using an Eavesdropper.
+In the remaining tasks (Tasks 2 through 5), we do not provide the client with the ability to stop the server. We are doing that only in Tasks 0 and 1. In the remaining Tasks, the server is left running - forever. In the remaining tasks, we are not using an eavesdropper.
 
 ## Task 2 Use the IntelliJ Project Name "Project2Task2"
 
