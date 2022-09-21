@@ -2,9 +2,9 @@
 
 ## Project 2 Client-Server Computing
 
-### Assigned: Friday, February 11, 2022
+### Assigned: Friday, September 23, 2022
 
-### Due: Friday, February 25, 2022,11:59pm
+### Due: Friday, October 7, 2022,11:59pm
 
 :checkered_flag: Submit to Canvas a ***single PDF file*** named Your_Last_Name_First_Name_Project2.pdf and a zip of each of the six projects (corresponding to the six tasks) below.
 
@@ -148,7 +148,7 @@ Second, run EavesdropperUDP.java. EavesdropperUDP will state that it is running 
 
 Third, when you run EchoClientUDP.java, provide it with either the correct port (of the real server) or the port that Eavesdropper is listening on. That is, it will work with either 6789 or 6798.  
 
-The Eavesdropper does not halt when the client says &quot;halt!&quot;. It displays the message to its console and simply passes the &quot;halt!&quot; message on to the server. The server will respond and then halt. The client will halt when it hears from the server. Our malicious player runs forever.
+The Eavesdropper will note when a client makes a request to halt. When the Eavesdropper sees the request to halt it will write a line of asterisks to its console and will alert the viewer that a halt message has arrived and is being forwarded to the server. The Eavesdropper does not halt when the client says &quot;halt!&quot;. It displays the message to its console (along with the line of asterisks) and simply passes the &quot;halt!&quot; message on to the server. The server will respond and then halt. The client will halt when it hears from the server. Our malicious player runs forever.
 
 :checkered_flag:**On your single pdf, make a copy of your documented EavesdropperUDP.java program.
 
