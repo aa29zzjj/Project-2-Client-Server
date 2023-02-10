@@ -159,7 +159,7 @@ Third, when you run EchoClientUDP.java, provide it with either the correct port 
 
 Eavesdropper is an active attacker. It will always append a &quot;!&quot; symbol to any message that the client intends to send to the server (except the halt message, which it leaves unmolested). This is the only addition that our Eavesdropper makes to the message. If the client sends the message &quot;hello&quot; the server will receive and echo the string &quot;hello!&quot;. The eavesdropper is careful to remove the &quot;!&quot; when it forwards the server's reply to the client.
 
-The Eavesdropper will note when a client makes a request to halt. If that occure, the eavesdropper does not add &quot;!&quot; to the message. And the Eavesdropper does not halt when the client says &quot;halt!&quot;. It displays the message to its console as usual and simply passes the &quot;halt!&quot; message on to the server. The server will respond and then halt. The client will halt when it hears from the server. Our malicious player runs forever.
+The Eavesdropper will note when a client makes a request to halt. If that occurs, the eavesdropper does not add &quot;!&quot; to the message. It leaves that particular message alone. And the Eavesdropper does not halt when the client says &quot;halt!&quot;. It displays the message to its console as usual and simply passes the &quot;halt!&quot; message on to the server. The server will respond and then halt. The client will halt when it hears from the server. Our malicious player runs forever.
 
 :checkered_flag:**On your single pdf, make a copy of your documented EavesdropperUDP.java program.
 
