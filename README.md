@@ -2,33 +2,40 @@
 
 ## Project 2 Client-Server Computing
 
-### Assigned: Friday, September 23, 2022
+### Assigned: Friday, February 10, 2023
 
-### Due: Friday, October 7, 2022,11:59pm
+### Due: Friday, February 24, 2023,11:59pm
 
-:checkered_flag: Submit to Canvas a ***single PDF file*** named Your_Last_Name_First_Name_Project2.pdf and a zip of each of the six projects (corresponding to the six tasks) below.
+#### Six Tasks
+
+:checkered_flag: Submit to Canvas a ***single PDF file*** named Your_Last_Name_First_Name_Project2.pdf along with a single zip file containing each of the six IntelliJ projects below (Task 0 through 5). 
 
 The single PDF will contain your responses to the questions marked with a checkered flag. It is important that you ***clearly label*** each answer with the labels provided below. It is also important to ***be prepared*** to demonstrate your working code if we need to verify your submission. Be sure to provide your name and email address at the top of the PDF submission.
 
-The six projects will be submitted as six zip files, each one will be the zip of your WHOLE IntelliJ project for tasks 0, 1, 2, 3, 4 and 5. Each IntelliJ project, except Task 1, will contain one client and one server. Task 1 will contain one client, one server, and one malicious player in the middle. For each project, zip the whole project, you need to use "File->Export Project->To Zip" in IntelliJ.
+The six IntelliJ projects will be submitted as six zip files, each one will be the zip of your WHOLE IntelliJ project for tasks 0, 1, 2, 3, 4 and 5. Each IntelliJ project, except Task 1, will contain one client and one server. Task 1 will contain one client, one server, and one malicious player in the middle. For each project, zip the whole project, you need to use "File->Export Project->To Zip" in IntelliJ.
 
 When all of your work is complete, zip the one PDF and the six project zip files into one big zip file for submission. Name this final file your_andrew_id.zip.
 
 ### Learning Objectives:
 
-Our **first objective** is for you to be able to work with client side and server side UDP and TCP sockets.
+Our **first objective** is for you to be able to work with the User Datagram Protocol (UDP) and the Transmission Control Protocol (TCP). UDP is used in many internet applications. The Domain Name Service (DNS) and the Dynamic Host Configuration Protocol (DHCP) both use UDP. Most video and audio traffic uses UDP. We use UDP when we need high performance and do not mind an occasional dropped packet. 
+
+TCP, on the other hand, is also widely used. It works hard to make sure that not a single bit of information is lost in transit. The Hyper Text Transfer Protocol (HTTP) uses TCP. 
 
 Our **second objective** is to understand the implications of a malicious player in the middle.
 
-Our **third objective** is to understand the differences (at the programming level) between the TCP and UDP protocols.
+Our **third objective** is for you to understand the abstraction provided by Remote Procedure Calls (RPC's). We do this by asking that you use a proxy design and hide communication code and keep it separate from your application code. RPC has been used for four decades and is at the foundation of many distributed systems. 
 
-Our **fourth objective** is for you to understand the abstraction provided by Remote Procedure Calls (RPC's). We do this by asking that you use a proxy design and hide communication code and keep it separate from your application code. And, our **fifth objective** is to expose you to digital signatures and their implementation in RSA.
+Our **fourth objective** is to expose you to digital signatures and their implementation in RSA. In modern distributed systems, we want to know exactly who sent us a message and if that message was tampered with or modified in any way. Digital signatures allow us to do that.
 
-There are six separate and distinct tasks in Project 2.
+### Submission notes:
 
-When you are asked to submit Java code (on the single pdf) software documentation is required. Points will be deducted if code is not well documented. Each significant block of code will contain a comment describing what the block of code is being used for. See Canvas/Home/Documentation for an example of good documentation.
+When you are asked to submit Java code (on the single pdf) it should be documented. Points will be deducted if code is not well documented. Each significant block of code will contain a comment describing what the block of code is being used for. See Canvas/Home/Documentation for an example of good and bad documentation.
 
+### Rubric 
 See the General Course Rubric (on Canvas). We will use a specific, unpublished rubric for this assignment but the general rubric provides rough guidance on how this assignment will be evaluated.
+
+### Some simplifications:
 
 In all of what follows, we are concerned with designing servers to handle one client at a time. We are not exploring the important issues surrounding multiple, simultaneous visitors. If you write a multi-threaded server to handle several visitors at once, that is great but is not required. It gains no additional credit.
 
@@ -40,9 +47,11 @@ In this assignment, you need not be concerned with data validation. You may assu
 
 In general, if these requirements do not explicitly ask for a certain feature, then you are not required to provide that feature. No additional points are awarded for extra features.
 
-If you use any code that is not yours, you are required to clearly cite the source - include a full URL in a comment and place it just above the code that is copied. Be careful to cite your sources.
+### Cite your sources
 
-## Task 0 Use the IntelliJ Project Name "Project2Task0".
+If you use any code that is not yours, you are required to clearly cite the source - include a full URL in a comment and place it just above the code that is copied. Be careful to cite your sources. If you submit code that you did not create and you fail to include proper citations then that will be reported as an academic violation. 
+
+## Task 0 introduces UDP. Name the IntelliJ project "Project2Task0".
 
 In Task 0, you will make several modifications to EchoServerUDP.java and EchoClientUDP.java. Note that
 these two programs are standard Java and we do not need to construct a web application in IntelliJ. Both of these programs will be placed in the same IntelliJ project.
@@ -103,11 +112,11 @@ public class EchoClientUDP{
   		byte[] buffer = new byte[1000];
   		DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
   		aSocket.receive(reply);
-  		System.out.println("Reply: " + new String(reply.getData()));
+  		System.out.println("Reply from server: " + new String(reply.getData()));
     }
 
-	}catch (SocketException e) {System.out.println("Socket: " + e.getMessage());
-	}catch (IOException e){System.out.println("IO: " + e.getMessage());
+	}catch (SocketException e) {System.out.println("Socket Exception: " + e.getMessage());
+	}catch (IOException e){System.out.println("IO Exception: " + e.getMessage());
 	}finally {if(aSocket != null) aSocket.close();}
     }
 }
@@ -115,15 +124,15 @@ public class EchoClientUDP{
 0. Get these programs running in IntelliJ. The two programs are placed in the same Intellij project and you are provided with two windows to interact with the two programs. Make the following modifications to the client and the server.
 1. Change the client&#39;s &quot;arg[0]&quot; to a hardcoded &quot;localhost&quot;.
 2. Document the client and the server. Describe what each line of code does.
-3. Add a line at the top of the client so that it announces, by printing a message, &quot;The client is running.&quot; at start up.
+3. Add a line at the top of the client so that it announces, by printing a message on the console, &quot;The UDP client is running.&quot; at start up.
 4. After the announcement that the client is running, have the client prompt the user for the server side port number. It will then use that port number to contact the server. For now, enter 6789.
-5. Add a line at the top of the server so that it announces &quot;The server is running.&quot; at start up.
+5. Add a line at the top of the server so that it announces &quot;The UDP server is running.&quot; at start up.
 6. After the announcement that the server is running, have the server prompt the user for the port number that the server is supposed to listen on. Enter 6789 when prompted.
 7. On the server, examine the length of the requestString and note that it is too large. Make modifications to the server code so that the request data is copied to an array with the correct number of bytes. Use this array of bytes to build a requestString of the correct size. Without these modifications, incorrect data may be displayed on the server. Upon each visit, your server will display the request arriving from the client.
 8. Do the same on the client side to properly handle the size of the response.
 9. If the client enters the command &quot;halt!&quot;, both the client and the server will halt execution. When the client program receives &quot;halt!&quot; from the user, it sends &quot;halt!&quot; to the sever and after hearing the &quot;halt!&quot; message from the server, the client exits. When the server receives &quot;halt!&quot; from the client, it will respond to the client with &quot;halt!&quot; and then exit.
-10. Add a line in the client so that it announces when it is quitting. It will write "Client side quitting" to the client side console.
-11. Add a line in the server so that it makes an announcement when it is quitting. The server only quits when it is told to do so by the client (and has just responded to the client with the &quot;halt!&quot; message). It will write "Server side quitting" to the server side console.
+10. Add a line in the client so that it announces when it is quitting. It will write "UDP Client side quitting" to the client side console.
+11. Add a line in the server so that it makes an announcement when it is quitting. The server only quits when it is told to do so by the client (and has just responded to the client with the &quot;halt!&quot; message). It will write "UDP Server side quitting" to the server side console.
 
 :checkered_flag:**On your single pdf, make a copy of your client and label it clearly as "Project2Task0Client".**
 
@@ -134,21 +143,23 @@ public class EchoClientUDP{
 :checkered_flag:**Make a screenshot of your server console screen. It will include five lines of data sent by the client and the server's response to the &quot;halt!&quot; request by the client. On your single pdf, label this screenshot as "Project2Task0ServerConsole".**
 
 
-## Task 1 Use the IntelliJ Project Name "Project2Task1".
+## Task 1 illustrates a malicious player in the middle attack on UDP. Name the IntelliJ Project "Project2Task1".
 
-In Task 1, you will experiment with a malicious player in the middle attack. This malicious player is only interested in eavesdropping on the conversation between the client and the server. It is passive. Other malicious players actually modify the data as it goes through. These are active malicious players. Here, we are interested in only the passive type of malicious player.
+In Task 1, you will experiment with a malicious player in the middle attack. This malicious player is interested in more than simply eavesdropping on the conversation between the client and the server. It is an active malicious player. You might want to get started by working on a passive malicious player - one that only eavesdrops and passes messages along to the server and then back to the client.
 
-All three of these programs will be placed in the same IntelliJ project.
+We will have three UDP programs in one project.
 
 Name your malicious player EavesdropperUDP.java. You will need to design and write EavesdropperUDP.java as it is described below.
 
 First, run EchoServerUDP.java as it has been modified in Task 0. EchoServerUDP will prompt you for its port. Enter the port 6789 for EchoServerUDP to listen on.
 
-Second, run EavesdropperUDP.java. EavesdropperUDP will state that it is running and will ask you for two ports. One port will be the port that the EavesdropperUDP.java will listen on and the other port will be the port number of the server that Eavesdropper.java is masquerading as. We want Eavesdropper.java to display all messages that go through it. We want it to eavesdrop on the wire. It will be masquerading as the server on port 6789. It will listen on port 6798 - hoping a foolish client will make a transposition error.
+Second, run EavesdropperUDP.java. EavesdropperUDP will state that it is running and will ask you for two ports. One port will be the port that the EavesdropperUDP.java will listen on and the other port will be the port number of the server that Eavesdropper.java is masquerading as. We want Eavesdropper.java to display (on its console) all messages that go through it. We want it to eavesdrop on the wire. It will be masquerading as the server on port 6789. It will listen on port 6798 - hoping a foolish client will make a transposition error.
 
 Third, when you run EchoClientUDP.java, provide it with either the correct port (of the real server) or the port that Eavesdropper is listening on. That is, it will work with either 6789 or 6798.  
 
-The Eavesdropper will note when a client makes a request to halt. When the Eavesdropper sees the request to halt it will write a line of asterisks to its console and will alert the viewer that a halt message has arrived and is being forwarded to the server. The Eavesdropper does not halt when the client says &quot;halt!&quot;. It displays the message to its console (along with the line of asterisks) and simply passes the &quot;halt!&quot; message on to the server. The server will respond and then halt. The client will halt when it hears from the server. Our malicious player runs forever.
+Eavesdropper is an active attacker. It will always append a &quot;&!quot; symbol to any message that the client intends to send to the server (except the halt message, which it leaves unmolested). This is the only addition that our Eavesdropper makes to the message. If the client sends the message &quot;hello&quot; the server will receive and echo the string &quot;hello!&quot;. The eavesdropper is careful to remove the &quot;!&quot; when it forwards the server's reply to the client.
+
+The Eavesdropper will note when a client makes a request to halt. If that occure, the eavesdropper does not add &quot;!&quot; to the message. And the Eavesdropper does not halt when the client says &quot;halt!&quot;. It displays the message to its console as usual and simply passes the &quot;halt!&quot; message on to the server. The server will respond and then halt. The client will halt when it hears from the server. Our malicious player runs forever.
 
 :checkered_flag:**On your single pdf, make a copy of your documented EavesdropperUDP.java program.
 
@@ -156,7 +167,7 @@ The Eavesdropper will note when a client makes a request to halt. When the Eaves
 
 In the remaining tasks (Tasks 2 through 5), we do not provide the client with the ability to stop the server. We are doing that only in Tasks 0 and 1. In the remaining Tasks, the server is left running - forever. In the remaining tasks, we are not using an eavesdropper.
 
-## Task 2 Use the IntelliJ Project Name "Project2Task2"
+## Task 2 illustrates a proxy design using UDP. Name the IntelliJ Project "Project2Task2".
 
 Make the following modifications to "EchoServerUDP.java" and "EchoClientUDP.java":
 
@@ -226,7 +237,7 @@ Another approach would be to only transmit byte arrays containing String data. Y
 :checkered_flag:**Take a screenshot of your server console screen. It will include the 10 lines of data being sent by the client and the server's responses. On your single pdf, label this screenshot as "Project2Task2ServerConsole".**
 
 
-## Task 3 Use the IntelliJ Project Name "Project2Task3"
+## Task 3 maintains server state using UDP. Name the IntelliJ project "Project2Task3"
 
 0. Name the client "RemoteVariableClientUDP.java". Name the server "RemoteVariableServerUDP.java".
 
@@ -313,9 +324,8 @@ Client side quitting. The remote variable server is still running.
 
 :checkered_flag:**Take a screenshot of your server console. It will show each visitor's ID, the operation requested, and the value of the variable being returned. On your single pdf, label this screenshot as "Project2Task3ServerConsole".**
 
-## Task 4 Use the IntelliJ Project Name "Project2Task4"
-
-0. This is almost the same task as Task 3. The only difference is you will use TCP rather than UDP. Make the necessary modifications to EchoServerTCP.java and EchoClientTCP.java so that they behave the same way as does your solution to Task 3. Rename these files "RemoteVariableClientTCP.java" and "RemoteVariableServerTCP.java".
+## Task 4 maintains server state using TCP. Name the IntelliJ project "Project2Task4".
+0. This is almost the same task as Task 3. The only difference is you will use TCP rather than UDP. Make the necessary modifications to EchoServerTCP.java and EchoClientTCP.java (from Coulouris) so that they behave the same way as does your solution to Task 3. Rename these files "RemoteVariableClientTCP.java" and "RemoteVariableServerTCP.java".
 
 1. As in Task 3, be sure to use a **proxy design** to encapsulate the communication code. This requires a re-organization of the code but it is important to separate concerns.
 
@@ -434,7 +444,7 @@ public class EchoClientTCP {
 
 :checkered_flag:**Take a screenshot of your server console screen. It will show each visitor's ID, the operation requested, and the value of the variable being returned. On your single pdf, label this screenshot as "Project2Task4ServerConsole".**
 
-## Task 5 Use the IntelliJ Project Name "Project2Task5"
+## Task 5 illustrates client authentiaction using signatures. Name the IntelliJ project "Project2Task5".
 
 Before starting this task, study the three programs below. RSAExample.java shows how you can generate RSA keys in Java. ShortMessageSign.java and ShortMessageVerify.java shows you how you can sign and check the signature on very small messages.   
 
@@ -832,7 +842,7 @@ public class ShortMessageVerify {
 
 ## Submission Summary:
 
-:checkered_flag: Submit to Canvas the single PDF file named Your_Last_Name_First_Name_Project2.pdf. It is important that you ***clearly label*** each submission. Be sure to provide your name and email address at the top of the .pdf file.
+:checkered_flag: Submit to Canvas the single PDF file named Your_Last_Name_First_Name_Project2.pdf. It is important that you ***clearly label*** each submission. Be sure to provide your name and email address at the top of the .pdf file. 
 
 Finally, create six zip files, each one of which is the zip of your WHOLE project for tasks 0, 1, 2, 3, 4 and 5. Each project will contain one client and one server (except for Task 1). For each project, zip the whole project, you need to use "File->Export Project->To Zip" in IntelliJ.
 
