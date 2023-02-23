@@ -682,13 +682,6 @@ public class ShortMessageSign {
         }
         inStr = inStr.toLowerCase();
 
-        // add a 0 byte to keep it positive
-        byte b[] = hexStringToByteArray("00"+inStr);
-
-        // This messsage is the unsigned integer value of the
-        // two bytes entered
-        BigInteger m = new BigInteger(b);
-
         String signedVal = sov.sign(inStr);
         System.out.println("Signed Value");
         System.out.println(signedVal);
