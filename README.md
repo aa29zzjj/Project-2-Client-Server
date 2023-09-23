@@ -2,13 +2,13 @@
 
 ## Project 2 Client-Server Computing
 
-### Assigned: Friday, February 10, 2023
+### Assigned: Friday, September 22, 2023
 
-### Due: Friday, February 24, 2023,11:59pm
+### Due: Friday, October 6, 2023,11:59pm
 
 #### Six Tasks
 
-:checkered_flag: Submit to Canvas a ***single PDF file*** named Your_Last_Name_First_Name_Project2.pdf along with a single zip file containing each of the six IntelliJ projects below (Task 0 through 5). 
+:checkered_flag: Submit to Canvas a ***single PDF file*** named Your_Last_Name_First_Name_Project2.pdf along with a single zip file containing each of the six IntelliJ projects below (Task 0 through 5).
 
 The single PDF will contain your responses to the questions marked with a checkered flag. It is important that you ***clearly label*** each answer with the labels provided below. It is also important to ***be prepared*** to demonstrate your working code if we need to verify your submission. Be sure to provide your name and email address at the top of the PDF submission.
 
@@ -18,21 +18,23 @@ When all of your work is complete, zip the one PDF and the six project zip files
 
 ### Learning Objectives:
 
-Our **first objective** is for you to be able to work with the User Datagram Protocol (UDP) and the Transmission Control Protocol (TCP). UDP is used in many internet applications. The Domain Name Service (DNS) and the Dynamic Host Configuration Protocol (DHCP) both use UDP. Most video and audio traffic uses UDP. We use UDP when we need high performance and do not mind an occasional dropped packet. 
+Our **first objective** is for you to be able to work with the User Datagram Protocol (UDP) and the Transmission Control Protocol (TCP). UDP is used in many internet applications. The Domain Name Service (DNS) and the Dynamic Host Configuration Protocol (DHCP) both use UDP. Most video and audio traffic uses UDP. We use UDP when we need high performance and do not mind an occasional dropped packet.
 
-TCP, on the other hand, is also widely used. It works hard to make sure that not a single bit of information is lost in transit. The Hyper Text Transfer Protocol (HTTP) uses TCP. 
+TCP, on the other hand, is also widely used. It works hard to make sure that not a single bit of information is lost in transit. The Hyper Text Transfer Protocol (HTTP) uses TCP.
 
 Our **second objective** is to understand the implications of a malicious player in the middle.
 
-Our **third objective** is for you to understand the abstraction provided by Remote Procedure Calls (RPC's). We do this by asking that you use a proxy design and hide communication code and keep it separate from your application code. RPC has been used for four decades and is at the foundation of many distributed systems. 
+Our **third objective** is for you to understand the abstraction provided by Remote Procedure Calls (RPC's). We do this by asking that you use a proxy design and hide communication code and keep it separate from your application code. RPC has been used for four decades and is at the foundation of many distributed systems.
 
 Our **fourth objective** is to expose you to digital signatures and their implementation in RSA. In modern distributed systems, we want to know exactly who sent us a message and if that message was tampered with or modified in any way. Digital signatures allow us to do that.
+
+Optionally, you may use a large language model, such as ChatGPT or Copilot, to create some of your code. Task 0, Task 1, and Task 5 must be done without the help of a large language model. There will be exam questions that ask specifically about the code in these three tasks. While you are allowed to use AI tools for these three tasks, it is totally optional. There will be questions about these tasks, too, but these questions will be more generic (since different students may code these tasks using different techniques).
 
 ### Submission notes:
 
 When you are asked to submit Java code (on the single pdf) it should be documented. Points will be deducted if code is not well documented. Each significant block of code will contain a comment describing what the block of code is being used for. See Canvas/Home/Documentation for an example of good and bad documentation.
 
-### Rubric 
+### Rubric
 See the General Course Rubric (on Canvas). We will use a specific, unpublished rubric for this assignment but the general rubric provides rough guidance on how this assignment will be evaluated.
 
 ### Some simplifications:
@@ -49,7 +51,7 @@ In general, if these requirements do not explicitly ask for a certain feature, t
 
 ### Cite your sources
 
-If you use any code that is not yours, you are required to clearly cite the source - include a full URL in a comment and place it just above the code that is copied. Be careful to cite your sources. If you submit code that you did not create and you fail to include proper citations then that will be reported as an academic violation. 
+If you use any code that is not yours (including code from a large language model), you are required to clearly cite the source - include a full URL in a comment and place it just above the code that is copied. If you use a large language model to generate code, be sure to say so. Be careful to cite your sources. If you submit code that you did not create on your own and you fail to include proper citations then that will be reported as an academic violation.
 
 ## Task 0 introduces UDP. Name the IntelliJ project "Project2Task0".
 
@@ -157,13 +159,13 @@ Second, run EavesdropperUDP.java. EavesdropperUDP will state that it is running 
 
 Third, when you run EchoClientUDP.java, provide it with either the correct port (of the real server) or the port that Eavesdropper is listening on. That is, it will work with either 6789 or 6798.  
 
-Eavesdropper is an active attacker. It will always append a &quot;!&quot; symbol to any message that the client intends to send to the server (except the halt message, which it leaves unmolested). This is the only addition that our Eavesdropper makes to the message. If the client sends the message &quot;hello&quot; the server will receive and echo the string &quot;hello!&quot;. The eavesdropper is careful to remove the &quot;!&quot; when it forwards the server's reply back to the client.
+Eavesdropper is an active attacker. If the client sends a string containing the word &quot;like&quot; the eavesdropper will replace the word &quot;like&quot; with the word &quot;dislike&quot;. The eavesdroppr will not bother with the string &quot;like&quot; if it is included as a substring of another word, such as &quot;dislike&quot;.
 
-The Eavesdropper will note when a client makes a request to halt. If that occurs, the eavesdropper does not add &quot;!&quot; to the message. It leaves that particular message alone. And the Eavesdropper does not halt when the client says &quot;halt!&quot;. It displays the message to its console as usual and simply passes the &quot;halt!&quot; message on to the server. The server will respond and then halt. The client will halt when it hears from the server. Our malicious player runs forever.
+If the client sends the message &quot;halt!&quot; then the server will respond, as usual, and then halt execution. The client will halt when it hears from the server. Our malicious player runs forever. And it displays everything it sees to its console.
 
 :checkered_flag:**On your single pdf, make a copy of your documented EavesdropperUDP.java program.
 
-:checkered_flag:**Make a screenshot showing your client, server, and eavesdropper consoles. The shot will show a few lines of data sent by the client and the server's response to the &quot;halt!&quot; request by the client. It will also show the eavesdropper console - showing the entire interaction between the client and the server. On your single pdf, label this screenshot as "Project2Task1ThreeConsoles". Be sure to show the client using port 6789 (correct server) and 6798 (malicious player). The idea is to provide screenshots that demonstrate that the client works against both servers.**
+:checkered_flag:**Make a screenshot showing your client, server, and eavesdropper consoles. The shot will show a few lines of data sent by the client and the server's response to the &quot;halt!&quot; request by the client. It will also show the eavesdropper console - showing the entire interaction between the client and the server. On your single pdf, label this screenshot as "Project2Task1ThreeConsoles". Be sure to show the client using port 6789 (correct server) and 6798 (malicious player). The idea is to provide screenshots that demonstrate that the client works against both servers. You also need to show the word &quot;like&quot; being replaced with the word &quot;dislike&quot;**
 
 In the remaining tasks (Tasks 2 through 5), we do not provide the client with the ability to stop the server. We are doing that only in Tasks 0 and 1. In the remaining Tasks, the server is left running - forever. In the remaining tasks, we are not using an eavesdropper.
 
@@ -444,7 +446,7 @@ public class EchoClientTCP {
 
 :checkered_flag:**Take a screenshot of your server console screen. It will show each visitor's ID, the operation requested, and the value of the variable being returned. On your single pdf, label this screenshot as "Project2Task4ServerConsole".**
 
-## Task 5 illustrates client authentiaction using signatures. Name the IntelliJ project "Project2Task5".
+## Task 5 illustrates client authentication using signatures. Name the IntelliJ project "Project2Task5".
 
 Before starting this task, study the three programs below. RSAExample.java shows how you can generate RSA keys in Java. ShortMessageSign.java and ShortMessageVerify.java shows you how you can sign and check the signature on very small messages.   
 
@@ -835,7 +837,7 @@ public class ShortMessageVerify {
 
 ## Submission Summary:
 
-:checkered_flag: Submit to Canvas the single PDF file named Your_Last_Name_First_Name_Project2.pdf. It is important that you ***clearly label*** each submission. Be sure to provide your name and email address at the top of the .pdf file. 
+:checkered_flag: Submit to Canvas the single PDF file named Your_Last_Name_First_Name_Project2.pdf. It is important that you ***clearly label*** each submission. Be sure to provide your name and email address at the top of the .pdf file.
 
 Finally, create six zip files, each one of which is the zip of your WHOLE project for tasks 0, 1, 2, 3, 4 and 5. Each project will contain one client and one server (except for Task 1). For each project, zip the whole project, you need to use "File->Export Project->To Zip" in IntelliJ.
 
