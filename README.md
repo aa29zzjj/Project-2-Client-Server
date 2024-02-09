@@ -8,7 +8,7 @@
 
 #### Five Tasks
 
-:checkered_flag: Submit to Canvas a ***single PDF file*** named Your_Last_Name_First_Name_Project2.pdf along with a single zip file containing each of the five IntelliJ projects below (Task 0 through 5).
+:checkered_flag: Submit to Canvas a ***single PDF file*** named Your_Last_Name_First_Name_Project2.pdf along with a single zip file containing each of the five IntelliJ projects below (Task 0 through 4).
 
 The single PDF will contain your responses to the questions marked with a checkered flag. It is important that you ***clearly label*** each answer with the labels provided below. It is also important to ***be prepared*** to demonstrate your working code if we need to verify your submission. Be sure to provide your name and email address at the top of the PDF submission.
 
