@@ -328,7 +328,9 @@ Client side quitting. The remote variable server is still running.
 
 ## Task 4 Distributes a neural network into a client server application. Name the IntelliJ project "Project2Task4"
 
-0. Read over, copy and run the stand alone program NeuralNetwork.java found here:
+0. Note: We are NOT studying neural networks in this class. You do not need to understand the mathematical details of how this neural network works. Some of you may want to learn the details and those matters are covered in the blog post mentioned in the program. However, for our purposes, we are treating the neural network as a black box. You only need to read over the code and see how to make calls on the neural network.
+
+1. Read over, copy and run the stand alone program NeuralNetwork.java found here:
 
 ```
 // This program is based upon an excellent blog post from Matt Mazur.
@@ -758,7 +760,7 @@ public class NeuralNetwork {
 
 ```
 
- 1. An example exectution of the program appears next:
+ 2. An example exectution of the program appears next:
 
  ```
  Using a neural network to learn a truth table.
@@ -880,18 +882,18 @@ public class NeuralNetwork {
  5. Exit program.
 
  ```
- 2. Your task is to distribute NeuralNetwork.java into two programs. One of these will act as the client. Name your client NeuralNetworkClient.java. The other will act as the server. Name your server NeuralNetworkServer.java.
+ 3. Your task is to distribute NeuralNetwork.java into two programs. One of these will act as the client. Name your client NeuralNetworkClient.java. The other will act as the server. Name your server NeuralNetworkServer.java.
 
- 3. Your client and server will communicate using JSON messages over UDP.
+ 4. Your client and server will communicate using JSON messages over UDP.
 
- 4. The neural network will live only on the server. When the server receives a JSON message, it carries out
+ 5. The neural network will live only on the server. When the server receives a JSON message, it carries out
  the requested task on the neural network and returns a result (also encoded in JSON) to the client.
 
- 5. The client will behave just like the stand alone application shown above. It will provide the same menu of options but, this time, it will communicate with the server to handle requests on the neural network.
+ 6. The client will behave just like the stand alone application shown above. It will provide the same menu of options but, this time, it will communicate with the server to handle requests on the neural network.
 
- 6. You should think about the format (design) of the JSON messages. Some need to go from the client to the server and some need to go from the server back to the client.
+ 7. You should think about the format (design) of the JSON messages. Some need to go from the client to the server and some need to go from the server back to the client.
 
- 7. As you did in Task 2, use a proxy design to encapsulate the communication code.
+ 8. As you did in Task 2, use a proxy design to encapsulate the communication code.
 
  :checkered_flag:**On your single pdf, make a copy of your client and label it clearly as "Project2Task4Client".**
 
