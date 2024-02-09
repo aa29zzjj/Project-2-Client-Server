@@ -590,7 +590,8 @@ public class NeuralNetwork {
         return outputLayer.feedForward(hiddenLayerOutputs);
     }
 
-    // Training means to feed the data forward - forward propagation. Compare the result with the target(s), and
+    // Training means to feed the data forward - forward propagation. Compare the
+		// result with the target(s), and
     // use backpropagation to update the weights. See the blog post to review the math.
     public void train(List<Double> trainingInputs, List<Double> trainingOutputs) {
 
