@@ -352,16 +352,20 @@ And here is a truth table for the XOR operation:
 1  0  1
 1  1  0
 
-The user is asked to provide the rightmost column of the table. For example, if the user wants to
-train the network to learn the XOR operation, the user will provide the following inputs:  0  1  1  0.
+The user is asked to provide the rightmost column of the table. For example, if
+the user wants to train the network to learn the XOR operation, the user will
+provide the following inputs:  0  1  1  0.
 
-10,000 steps are typically used to train the network. If the error is close to 0, for example, 0.053298, the network
-will perform well.
+10,000 steps are typically used to train the network. If the error is close
+to 0, for example, 0.053298, the network will perform well.
 
-If the output of a test is close to 1, for example, .9759876, we will call that a 1.
-If the output of a test is close to 0, for example, .0348712, we will call that a 0.
+If the output of a test is close to 1, for example, .9759876, we will
+call that a 1.
+If the output of a test is close to 0, for example, .0348712, we will
+call that a 0.
 
-The program is not written to handle input errors. We assume that the user behaves well.
+The program is not written to handle input errors. We assume that the
+user behaves well.
  */
 
 import java.util.*;
