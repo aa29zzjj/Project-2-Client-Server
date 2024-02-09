@@ -2,9 +2,9 @@
 
 ## Project 2 Client-Server Computing
 
-### Assigned: Friday, September 22, 2023
+### Assigned: Friday, February 9, 2024
 
-### Due: Friday, October 6, 2023,11:59pm
+### Due: Friday, February 23, 2024,11:59pm
 
 #### Six Tasks
 
