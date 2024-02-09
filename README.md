@@ -352,20 +352,16 @@ And here is a truth table for the XOR operation:
 1  0  1
 1  1  0
 
-The user is asked to provide the rightmost column of the table. For example, if
-the user wants to train the network to learn the XOR operation, the user will
-provide the following inputs:  0  1  1  0.
+The user is asked to provide the rightmost column of the table. For example, if the user wants to
+train the table for the XOR operation, the user will provide the following inputs:  0  1  1  0.
 
-10,000 steps are typically used to train the network. If the error is close
-to 0, for example, 0.053298, the network will perform well.
+10,000 steps are typically used to train the network. If the error is close to 0, for example, 0.053298, the network
+will perform well.
 
-If the output of a test is close to 1, for example, .9759876, we will
-call that a 1.
-If the output of a test is close to 0, for example, .0348712, we will
-call that a 0.
+If the output of a test is close to 1, for example, .9759876, we will call that a 1.
+If the output of a test is close to 0, for example, .0348712, we will call that a 0.
 
-The program is not written to handle input errors. We assume that the
-user behaves well.
+The program is not written to handle input errors. We assume that the user behaves well.
  */
 
 import java.util.*;
@@ -590,8 +586,7 @@ public class NeuralNetwork {
         return outputLayer.feedForward(hiddenLayerOutputs);
     }
 
-    // Training means to feed the data forward - forward propagation. Compare the
-		// result with the target(s), and
+    // Training means to feed the data forward - forward propagation. Compare the result with the target(s), and
     // use backpropagation to update the weights. See the blog post to review the math.
     public void train(List<Double> trainingInputs, List<Double> trainingOutputs) {
 
@@ -654,7 +649,7 @@ public class NeuralNetwork {
     public static void main(String args[]) {
 
         // Create an initial truth table with all 0's in the range.
-        ArrayList<Double[][]> user_training_sets = new ArrayList<Double[][]>(Arrays.asList(
+        ArrayList<Double[][]> userTrainingSets = new ArrayList<Double[][]>(Arrays.asList(
                 new Double[][]{{0.0, 0.0}, {0.0}},
                 new Double[][]{{0.0, 1.0}, {0.0}},
                 new Double[][]{{1.0, 0.0}, {0.0}},
@@ -671,10 +666,10 @@ public class NeuralNetwork {
         // Hold a list of doubles for input for the neural network to train on.
         // In this example, if we want to train the neural network to learn the XOR,
         // the list would have two doubles, say 0 1 or 1 0 or 1 1.
-        List<Double> user_training_inputs;
+        List<Double> userTrainingInputs;
 
         // Hold a list of double for the output of training. For example, XOR would produce 1 double as output.
-        List<Double> user_training_outputs;
+        List<Double> userTrainingOutputs;
 
         int userSelection = menu();
 
@@ -683,19 +678,19 @@ public class NeuralNetwork {
                 case 0: // display the truth table
                     System.out.println("Working with the following truth table");
                     for (int r = 0; r < 4; r++) {
-                        System.out.print(user_training_sets.get(r)[0][0] + "  " + user_training_sets.get(r)[0][1] + "  " + user_training_sets.get(r)[1][0] + "  ");
+                        System.out.print(userTrainingSets.get(r)[0][0] + "  " + userTrainingSets.get(r)[0][1] + "  " + userTrainingSets.get(r)[1][0] + "  ");
                         System.out.println();
                     }
                     break;
                 case 1:  // get the range values of the truth table. These values are from the rightmost column of a
-                         // standard truth table.
-                    System.out.println("Enter the four results of a 4 by 2 truth table. Each value should be 0 ot 1.");
+                    // standard truth table.
+                    System.out.println("Enter the four results of a 4 by 2 truth table. Each value should be 0 or 1.");
                     Double a = scanner.nextDouble();
                     Double b = scanner.nextDouble();
                     Double c = scanner.nextDouble();
                     Double d = scanner.nextDouble();
                     // Create the new table with the user input as the rightmost column.
-                    user_training_sets = new ArrayList<Double[][]>(Arrays.asList(
+                    userTrainingSets = new ArrayList<Double[][]>(Arrays.asList(
                             new Double[][]{{0.0, 0.0}, {a}},
                             new Double[][]{{0.0, 1.0}, {b}},
                             new Double[][]{{1.0, 0.0}, {c}},
@@ -708,13 +703,13 @@ public class NeuralNetwork {
                 case 2: // perform a single trainng step and display total error.
                     random_choice = rand.nextInt(4);
                     // Get the two inputs
-                    user_training_inputs = Arrays.asList(user_training_sets.get(random_choice)[0]);
+                    userTrainingInputs = Arrays.asList(userTrainingSets.get(random_choice)[0]);
                     // Get the one output (in the case of truth tables).
-                    user_training_outputs = Arrays.asList(user_training_sets.get(random_choice)[1]);
+                    userTrainingOutputs = Arrays.asList(userTrainingSets.get(random_choice)[1]);
                     // Show that row to the neural network
-                    neuralNetwork.train(user_training_inputs, user_training_outputs);
+                    neuralNetwork.train(userTrainingInputs, userTrainingOutputs);
                     // Show error as we train
-                    System.out.println("After this step the error is : " + neuralNetwork.calculateTotalError(user_training_sets));
+                    System.out.println("After this step the error is : " + neuralNetwork.calculateTotalError(userTrainingSets));
                     break;
                 case 3: // perform n training steps
                     System.out.println("Enter the number of training sets.");
@@ -722,14 +717,14 @@ public class NeuralNetwork {
                     for (int i = 0; i < n; i++) {
                         random_choice = rand.nextInt(4);
                         // Get the two inputs
-                        user_training_inputs = Arrays.asList(user_training_sets.get(random_choice)[0]);
+                        userTrainingInputs = Arrays.asList(userTrainingSets.get(random_choice)[0]);
                         // Get the one output
-                        user_training_outputs = Arrays.asList(user_training_sets.get(random_choice)[1]);
+                        userTrainingOutputs = Arrays.asList(userTrainingSets.get(random_choice)[1]);
                         // Show that row to the neural network
-                        neuralNetwork.train(user_training_inputs, user_training_outputs);
+                        neuralNetwork.train(userTrainingInputs, userTrainingOutputs);
                     }
                     // Show error as we train
-                    System.out.println("After " + n + " training steps, our error " + neuralNetwork.calculateTotalError(user_training_sets));
+                    System.out.println("After " + n + " training steps, our error " + neuralNetwork.calculateTotalError(userTrainingSets));
                     break;
                 case 4: // test with a pair of inputs.
                     System.out.println("Enter a pair of doubles from a row of the truth table. These are domain values.");
@@ -791,7 +786,7 @@ public class NeuralNetwork {
  4. Test with a pair of inputs.
  5. Exit program.
  1
- Enter the four results of a 4 by 2 truth table. Each value should be 0 ot 1.
+ Enter the four results of a 4 by 2 truth table. Each value should be 0 or 1.
  0 1 1 0
  Using a neural network to learn a truth table.
  Main Menu
@@ -898,7 +893,27 @@ public class NeuralNetwork {
 
  7. You should think about the format (design) of the JSON messages. Some need to go from the client to the server and some need to go from the server back to the client.
 
- 8. As you did in Task 2, use a proxy design to encapsulate the communication code.
+ 8. In my solution, I expect to use the following JSON message sketches (feel free to improve):
+
+```
+{“request”:”getCurrentRange”}
+{“request”:”setCurrentRange”, “val1” : double, “val2” : double,“val3” : double,“val4” : double}
+{“request”:”train, “iterations” : 10000}
+{“request”:”test”, “val1”: double, “val2”: double }
+
+Here are the four corresponding response messages:
+
+{“response”:”getCurrentRange”, “status”: “OK”, “val1” : double, “val2” : double, “val3” : double,“val4” : double}
+{“response”:”setCurrentRange”, “status”: “OK”}
+{“response”:”train”, “status”: “OK”, “val1” : totalError}
+{“response”:”test”, “status”: “OK”, “val1” : double}
+
+```
+
+
+ 9. As you did in Task 2, use a proxy design to encapsulate the communication code.
+
+
 
  :checkered_flag:**On your single pdf, make a copy of your client and label it clearly as "Project2Task4Client".**
 
