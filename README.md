@@ -12,9 +12,9 @@
 
 The single PDF will contain your responses to the questions marked with a checkered flag. It is important that you ***clearly label*** each answer with the labels provided below. It is also important to ***be prepared*** to demonstrate your working code if we need to verify your submission. Be sure to provide your name and email address at the top of the PDF submission.
 
-The six IntelliJ projects will be submitted as six zip files, each one will be the zip of your WHOLE IntelliJ project for tasks 0, 1, 2, 3, and 4. Each IntelliJ project, except Task 1, will contain one client and one server. Task 1 will contain one client, one server, and one malicious player in the middle. For each project, zip the whole project, you need to use "File->Export Project->To Zip" in IntelliJ.
+The five IntelliJ projects will be submitted as five zip files, each one will be the zip of your WHOLE IntelliJ project for tasks 0, 1, 2, 3, and 4. Each IntelliJ project, except Task 1, will contain one client and one server. Task 1 will contain one client, one server, and one malicious player in the middle. For each project, zip the whole project, you need to use "File->Export Project->To Zip" in IntelliJ.
 
-When all of your work is complete, zip the one PDF and the six project zip files into one big zip file for submission. Name this final file your_andrew_id.zip.
+When all of your work is complete, zip the one PDF and the five project zip files into one big zip file for submission. Name this final file your_andrew_id.zip.
 
 ### Learning Objectives:
 
@@ -908,4 +908,4 @@ public class NeuralNetwork {
 
 Finally, create five zip files, each one of which is the zip of your WHOLE project for tasks 0, 1, 2, 3, and 4. Each project will contain one client and one server (except for Task 1). For each project, zip the whole project, you need to use "File->Export Project->To Zip" in IntelliJ.
 
-Zip the one PDF and the six project zip files into one big zip file for submission. Name this file your_andrew_id.zip.
+Zip the one PDF and the five project zip files into one big zip file for submission. Name this file your_andrew_id.zip.
