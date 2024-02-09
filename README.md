@@ -18,17 +18,17 @@ When all of your work is complete, zip the one PDF and the six project zip files
 
 ### Learning Objectives:
 
-Our **first objective** is for you to be able to work with the User Datagram Protocol (UDP) and the Transmission Control Protocol (TCP). UDP is used in many internet applications. The Domain Name Service (DNS) and the Dynamic Host Configuration Protocol (DHCP) both use UDP. Most video and audio traffic uses UDP. We use UDP when we need high performance and do not mind an occasional dropped packet.
+Our **first objective** is for you to be able to work with the User Datagram Protocol (UDP). UDP is used in many internet applications. The Domain Name Service (DNS) and the Dynamic Host Configuration Protocol (DHCP) both use UDP. Most video and audio traffic uses UDP. We use UDP when we need high performance and do not mind an occasional dropped packet.
 
-TCP, on the other hand, is also widely used. It works hard to make sure that not a single bit of information is lost in transit. The Hyper Text Transfer Protocol (HTTP) uses TCP.
+TCP, on the other hand, is also widely used. It works hard to make sure that not a single bit of information is lost in transit. The Hyper Text Transfer Protocol (HTTP) uses TCP. We are not using TCP in this project.
 
 Our **second objective** is to understand the implications of a malicious player in the middle.
 
 Our **third objective** is for you to understand the abstraction provided by Remote Procedure Calls (RPC's). We do this by asking that you use a proxy design and hide communication code and keep it separate from your application code. RPC has been used for four decades and is at the foundation of many distributed systems.
 
-Our **fourth objective** is to expose you to digital signatures and their implementation in RSA. In modern distributed systems, we want to know exactly who sent us a message and if that message was tampered with or modified in any way. Digital signatures allow us to do that.
+Our **fourth objective** is the learn how to distribute a stand alone application. We use a simple neural network as our application. Our intent is not to study neural networks in a class on distributed systems. But some of you might decide to dig further into neural networks and use this application as a starting point.
 
-Optionally, you may use a large language model, such as ChatGPT or Copilot, to create some of your code. Task 0, Task 1, and Task 5 must be done without the help of a large language model. There will be exam questions that ask specifically about the code in these three tasks. While you are allowed to use AI tools for these three tasks, it is totally optional. There will be questions about these tasks, too, but these questions will be more generic (since different students may code these tasks using different techniques).
+Optionally, you may use a large language model (based on neural networks), such as ChatGPT or Copilot, to create some of your code. Task 0, Task 1, and Task 5 must be done without the help of a large language model. There will be exam questions that ask specifically about the code in these three tasks. While you are allowed to use AI tools for these three tasks, it is totally optional. There will be questions about these tasks, too, but these questions will be more generic (since different students may code these tasks using different techniques).
 
 ### Submission notes:
 
@@ -326,519 +326,586 @@ Client side quitting. The remote variable server is still running.
 
 :checkered_flag:**Take a screenshot of your server console. It will show each visitor's ID, the operation requested, and the value of the variable being returned. On your single pdf, label this screenshot as "Project2Task3ServerConsole".**
 
-## Task 4 maintains server state using TCP. Name the IntelliJ project "Project2Task4".
-0. This is almost the same task as Task 3. The only difference is you will use TCP rather than UDP. Make the necessary modifications to EchoServerTCP.java and EchoClientTCP.java (from Coulouris) so that they behave the same way as does your solution to Task 3. Rename these files "RemoteVariableClientTCP.java" and "RemoteVariableServerTCP.java".
+## Task 4 Distributes a neural network into a client server application. Name the IntelliJ project "Project2Task4"
 
-1. As in Task 3, be sure to use a **proxy design** to encapsulate the communication code. This requires a re-organization of the code but it is important to separate concerns.
-
-
-EchoServerTCP.java from Coulouris text
+0. Read over, copy and run the stand alone program NeuralNetwork.java found here:
 
 ```
-import java.net.*;
-import java.io.*;
-import java.util.Scanner;
+// This program is based upon an excellent blog post from Matt Mazur.
+// See: https://mattmazur.com/2015/03/17/a-step-by-step-backpropagation-example/
+// Matt's solution is in Python and this program is a translation of the same logic into Java.
+// The mathematics underlying this neural network are explained well in the blog post.
+// To fully understand this program, you would need to study the math in the blog post.
 
-public class EchoServerTCP {
+/*The idea is to train a neural network to learn a truth table.
+Here is a truth table for the AND operation:
+0   0   0
+0   1   0
+1   0   0
+1   1   1
 
-    public static void main(String args[]) {
-        Socket clientSocket = null;
-        try {
-            int serverPort = 7777; // the server port we are using
+And here is a truth table for the XOR operation:
+0  0  0
+0  1  1
+1  0  1
+1  1  0
 
-            // Create a new server socket
-            ServerSocket listenSocket = new ServerSocket(serverPort);
+The user is asked to provide the rightmost column of the table. For example, if the user wants to
+train the table for the XOR operation, the user will provide the following inputs:  0  1  1  0.
 
-            /*
-             * Block waiting for a new connection request from a client.
-             * When the request is received, "accept" it, and the rest
-             * the tcp protocol handshake will then take place, making
-             * the socket ready for reading and writing.
-             */
-            clientSocket = listenSocket.accept();
-            // If we get here, then we are now connected to a client.
+10,000 steps are typically used to train the network. If the error is close to 0, for example, 0.053298, the network
+will perform well.
 
-            // Set up "in" to read from the client socket
-            Scanner in;
-            in = new Scanner(clientSocket.getInputStream());
+If the output of a test is close to 1, for example, .9759876, we will call that a 1.
+If the output of a test is close to 0, for example, .0348712, we will call that a 0.
 
-            // Set up "out" to write to the client socket
-            PrintWriter out;
-            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream())));
-
-            /*
-             * Forever,
-             *   read a line from the socket
-             *   print it to the console
-             *   echo it (i.e. write it) back to the client
-             */
-            while (true) {
-                String data = in.nextLine();
-                System.out.println("Echoing: " + data);
-                out.println(data);
-                out.flush();
-            }
-
-        // Handle exceptions
-        } catch (IOException e) {
-            System.out.println("IO Exception:" + e.getMessage());
-
-        // If quitting (typically by you sending quit signal) clean up sockets
-        } finally {
-            try {
-                if (clientSocket != null) {
-                    clientSocket.close();
-                }
-            } catch (IOException e) {
-                // ignore exception on close
-            }
-        }
-    }
-}
-```
-
-EchoClientTCP.java from Coulouris text
-
-```
-import java.net.*;
-import java.io.*;
-
-public class EchoClientTCP {
-
-    public static void main(String args[]) {
-        // arguments supply hostname
-        Socket clientSocket = null;
-        try {
-            int serverPort = 7777;
-            clientSocket = new Socket(args[0], serverPort);
-
-            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream())));
-
-
-            BufferedReader typed = new BufferedReader(new InputStreamReader(System.in));
-            String m;
-            while ((m = typed.readLine()) != null) {
-                out.println(m);
-                out.flush();
-                String data = in.readLine(); // read a line of data from the stream
-                System.out.println("Received: " + data);
-            }
-        } catch (IOException e) {
-            System.out.println("IO Exception:" + e.getMessage());
-        } finally {
-            try {
-                if (clientSocket != null) {
-                    clientSocket.close();
-                }
-            } catch (IOException e) {
-                // ignore exception on close
-            }
-        }
-    }
-}
-```
-:checkered_flag:**On your single pdf, make a copy of your client and label it clearly as "Project2Task4Client".**
-
-:checkered_flag:**On your single pdf, make a copy of your server and label it clearly as "Project2Task4Server".**
-
-:checkered_flag:**Take a screenshot of your client console screen. Show three different clients interacting with the server using three distinct ID&#39;s. Each client will perform one addition, one subtraction, and finally a get request. It will also show the client being stopped, and re-run a second time with get requests from each of the three clients.  On your single pdf, label this screenshot as "Project2Task4ClientConsole".**
-
-:checkered_flag:**Take a screenshot of your server console screen. It will show each visitor's ID, the operation requested, and the value of the variable being returned. On your single pdf, label this screenshot as "Project2Task4ServerConsole".**
-
-## Task 5 illustrates client authentication using signatures. Name the IntelliJ project "Project2Task5".
-
-Before starting this task, study the three programs below. RSAExample.java shows how you can generate RSA keys in Java. ShortMessageSign.java and ShortMessageVerify.java shows you how you can sign and check the signature on very small messages.   
-
-This Task is modeled after the way an Ethereum blockchain client signs requests.
-
-Make the following modifications to your work in Task 4.
-
-0. Rename these files "SigningClientTCP.java" and "VerifyingServerTCP.java".
-
-1. As before, the client will be interactive and menu driven. It will transmit add or subtract or get requests to the server, along with the ID computed in 3 below, and provide an option to exit.
-
-2. We want to send signed request from the client. Each time the client program runs, it will create new RSA public and private keys and **display** these keys to the user. See the RSAExample.java program below for guidance on how to build these keys. It is fine to use the code that you find in RSAExample.java (with citations, of course). After the client program creates and displays these keys, it interacts with the user and the server.
-
-3. The client&#39;s ID will be formed by taking the least significant 20 bytes of the hash of the client&#39;s public key. Note: an RSA public key is the pair e and n. Prior to hashing, you will combine these two integers with concatenation. Unlike in Task 4, we are no longer prompting the user to enter the ID – the ID is computed in the client code. As in Bitcoin or Ethereum, the user's ID is derived from the public key.
-
-4. The client will also transmit its public key with each request. Again, note that this key is a combination of e and n. These values will be transmitted in the clear and will be used by the server to verify the signature.
-
-5. Finally, the client will sign each request. So, by using its private key (d and n), the client will encrypt the hash of the message it sends to the server. The signature will be added to each request. It is very important that the big integer created with the hash (before signing) is positive. RSA does not work with negative integers. See details in the code of ShortMessageSign.java and ShortMessageVerify.java below. You may use this code if cited.
-
-6. The server will make two checks before servicing any client request. First, does the public key (included with each request) hash to the ID (also provided with each request)? Second, is the request properly signed? If both of these are true, the request is carried out on behalf of the client. The server will add, subtract or get. Otherwise, the server returns the message &quot;Error in request&quot;.
-7. By studying ShortMessageVerify.java and ShortMessageSign.java you will know how to compute a signature. Your solution, however, will not use the short message approach as exemplified there. Note that we are not using any Java crypto API&#39;s that abstract away the details of signing.
-8. We will use SHA-256 for our hash function h(). To clarify further:
-
-The client will send the id: last20BytesOf(h(e+n)), the public key: e and n in the clear, the operation (add, get, or subtract), the operand, and the signature E(h(all prior tokens),d). The signature is thus an encrypted hash. It is encrypted
-using d and n - the client&#39;s private key. E represents standard RSA encryption. The function h(e+n) is the SHA-256 hash of e concatenated with n.
-
-During one client session, the ID will always be the same. If the client quits and restarts, it will have a new ID and operate on a new sum. The server is left running and survives client restarts.
-
-As before, use a **proxy design** to encapsulate the communication code.
-
-Produce a screen shot illustrating a successful execution and submit the screenshot in the description folder as described at the end of this document. The screen shot will show three different clients interacting with the server using three distinct ID&#39;s.
-
-:checkered_flag:**On your single pdf, make a copy of your client and label it clearly as "Project2Task5Client".**
-
-:checkered_flag:**On your single pdf, make a copy of your server and label it clearly as "Project2Task5Server".**
-
-:checkered_flag:**Take a screenshot of your client console screen. Show a single client interacting with the server using the keys generated when the client code is run. All of the client's key material must be displayed on the client side console. Display the private key (d and n) and the public key (e and n). The client will perform one addition, one subtraction, and finally a get request. On your single pdf, label this screenshot as "Project2Task5ClientConsole".**
-
-:checkered_flag:**Take a screenshot of your server console screen. It will show each visitor's public key material (e and n) and whether or not the signature is verified, the operation requested, and the value of the variable being returned. On your single pdf, label this screenshot as "Project2Task5ServerConsole".**
-
-RSAExample.java - Key generation and sample encryption and decryption
-
-```
-/* Demonstrate RSA in Java using BigIntegers */
-
-package edu.cmu.andrew.mm6;
-
-import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Random;
-
-/**
- *  RSA Algorithm from CLR
- *
- * 1. Select at random two large prime numbers p and q.
- * 2. Compute n by the equation n = p * q.
- * 3. Compute phi(n)=  (p - 1) * ( q - 1)
- * 4. Select a small odd integer e that is relatively prime to phi(n).
- * 5. Compute d as the multiplicative inverse of e modulo phi(n). A theorem in
- *    number theory asserts that d exists and is uniquely defined.
- * 6. Publish the pair P = (e,n) as the RSA public key.
- * 7. Keep secret the pair S = (d,n) as the RSA secret key.
- * 8. To encrypt a message M compute C = M^e (mod n)
- * 9. To decrypt a message C compute M = C^d (mod n)
+The program is not written to handle input errors. We assume that the user behaves well.
  */
 
-public class RSAExample {
+import java.util.*;
 
-        public static void main(String[] args) {
-                // Each public and private key consists of an exponent and a modulus
-                BigInteger n; // n is the modulus for both the private and public keys
-                BigInteger e; // e is the exponent of the public key
-                BigInteger d; // d is the exponent of the private key
+// Each Neuron has a bias, a list of weights, and a list of inputs.
+// Each neuron will produce a single real number as an output.
+class Neuron {
+    private double bias;
+    public List<Double> weights;
+    public List<Double> inputs;
+    double output;
+    // Construct a neuron with a bias and reserve memory for its weights.
+    public Neuron(double bias) {
+        this.bias = bias;
+        weights = new ArrayList<Double>();
+    }
+    //Calculate the output by using the inputs and weights already provided.
+    //Squash the result so the output is between 0 and 1.
+    public double calculateOutput(List<Double> inputs) {
 
-                Random rnd = new Random();
+        this.inputs = inputs;
 
-                // Step 1: Generate two large random primes.
-                // We use 400 bits here, but best practice for security is 2048 bits.
-                // Change 400 to 2048, recompile, and run the program again and you will
-                // notice it takes much longer to do the math with that many bits.
-                BigInteger p = new BigInteger(400, 100, rnd);
-                BigInteger q = new BigInteger(400, 100, rnd);
+        output = squash(calculateTotalNetInput());
+        return output;
+    }
+    // Compute the total net input from the input, weights, and bias.
+    public double calculateTotalNetInput() {
 
-                // Step 2: Compute n by the equation n = p * q.
-                n = p.multiply(q);
-
-                // Step 3: Compute phi(n) = (p-1) * (q-1)
-                BigInteger phi = (p.subtract(BigInteger.ONE)).multiply(q.subtract(BigInteger.ONE));
-
-                // Step 4: Select a small odd integer e that is relatively prime to phi(n).
-                // By convention the prime 65537 is used as the public exponent.
-                e = new BigInteger("65537");
-
-                // Step 5: Compute d as the multiplicative inverse of e modulo phi(n).
-                d = e.modInverse(phi);
-
-                System.out.println(" e = " + e);  // Step 6: (e,n) is the RSA public key
-                System.out.println(" d = " + d);  // Step 7: (d,n) is the RSA private key
-                System.out.println(" n = " + n);  // Modulus for both keys
-
-                // Encode a simple message. For example the letter 'A' in UTF-8 is 65
-                BigInteger m = new BigInteger("65");
-
-                // Step 8: To encrypt a message M compute C = M^e (mod n)
-                BigInteger c = m.modPow(e, n);
-
-                // Step 9: To decrypt a message C compute M = C^d (mod n)
-                BigInteger clear = c.modPow(d, n);
-                System.out.println("Cypher text = " + c);
-                System.out.println("Clear text = " + clear); // Should be "65"
-
-                // Step 8 (reprise) Encrypt the string 'RSA is way cool.'
-                String s = "RSA is way cool.";
-                m = new BigInteger(s.getBytes()); // m is the original clear text
-                c = m.modPow(e, n);     // Do the encryption, c is the cypher text
-
-                // Step 9 (reprise) Decrypt...
-                clear = c.modPow(d, n); // Decrypt, clear is the resulting clear text
-                String clearStr = new String(clear.toByteArray());  // Decode to a string
-
-                System.out.println("Cypher text = " + c);
-                System.out.println("Clear text = " + clearStr);
-
+        double total = 0.0;
+        for (int i = 0; i < inputs.size(); i++) {
+            total += inputs.get(i) * weights.get(i);
         }
-}
-
-```
-
-ShortMessageSign.java - Signing
-
-```
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Scanner;
-
-/** ShortMessageSign.java provides capabilities to sign
- *  very short messages. These messages are 4 hex digits.
- *  ShortMessageSign has three private members: RSA e,d and n.
- *  These are all very small java BigIntegers. ShortMessageSign is
- *  only used for instructional purposes.
- *
- *  For signing: the ShortMessageSign object is constructed with RSA
- *  keys (e,d,n). These keys are not created here but are passed in by the caller.
- *  Then, a caller can sign a message - the string returned by the sign
- *  method is evidence that the signer has the associated private key.
- *  After a message is signed, the message and the string may be transmitted
- *  or stored.
- *  The signature is represented by a base 10 integer.
- */
-
-
-public class ShortMessageSign {
-
-    private BigInteger e,d,n;
-
-    /** A ShortMessageSign object may be constructed with RSA's e, d, and n.
-     *  The holder of the private key (the signer) would call this
-     *  constructor. Only d and n are used for signing.
-     */
-    public ShortMessageSign(BigInteger e, BigInteger d, BigInteger n) {
-        this.e = e;
-        this.d = d;
-        this.n = n;
+        return total + bias;
     }
 
-    /**
-     * Signing proceeds as follows:
-     * 1) Get the bytes from the string to be signed.
-     * 2) Compute a SHA-1 digest of these bytes.
-     * 3) Copy these bytes into a byte array that is one byte longer than needed.
-     *    The resulting byte array has its extra byte set to zero. This is because
-     *    RSA works only on positive numbers. The most significant byte (in the
-     *    new byte array) is the 0'th byte. It must be set to zero.
-     * 4) Create a BigInteger from the byte array.
-     * 5) Encrypt the BigInteger with RSA d and n.
-     * 6) Return to the caller a String representation of this BigInteger.
-     * @param message a sting to be signed
-     * @return a string representing a big integer - the encrypted hash.
-     * @throws Exception
-     */
-    public String sign(String message) throws Exception {
-
-        // compute the digest with SHA-256
-        byte[] bytesOfMessage = message.getBytes("UTF-8");
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
-        byte[] bigDigest = md.digest(bytesOfMessage);
-
-        // we only want two bytes of the hash for ShortMessageSign
-        // we add a 0 byte as the most significant byte to keep
-        // the value to be signed non-negative.
-        byte[] messageDigest = new byte[3];
-        messageDigest[0] = 0;   // most significant set to 0
-        messageDigest[1] = bigDigest[0]; // take a byte from SHA-256
-        messageDigest[2] = bigDigest[1]; // take a byte from SHA-256
-
-        // The message digest now has three bytes. Two from SHA-256
-        // and one is 0.
-
-        // From the digest, create a BigInteger
-        BigInteger m = new BigInteger(messageDigest);
-
-        // encrypt the digest with the private key
-        BigInteger c = m.modPow(d, n);
-
-        // return this as a big integer string
-        return c.toString();
+    // This is the activation function, returning a value between 0 and 1.
+    public double squash(double totalNetInput) {
+        double v = 1.0 / (1.0 + Math.exp(-1.0 * totalNetInput));
+        return v;
     }
-
-    public static void main(String args[]) throws Exception {
-
-        // Test driver for ShortMessageSign
-
-        // Since we are signing only very short messages, we can generate some really small keys.
-        // The keys were generated by the RSA algorithm
-        // p and q were 20 bits each.
-        // In practice, the keys would be larger.
-        BigInteger e = new BigInteger("65537");
-        BigInteger d = new BigInteger("5420920152787448033");
-        BigInteger n = new BigInteger("9013594933187057813");
-
-        ShortMessageSign sov = new ShortMessageSign(e,d,n);
-
-        Scanner sc = new Scanner(System.in);
-
-        // Get some data to sign
-        System.out.println("Enter data to be signed (at most 4 hex digits)");
-        System.out.println("All data will be converted to lower case");
-        String inStr = sc.nextLine();
-        if(inStr.length() != 4) {
-            System.out.println("Error in input " + inStr);
-            return;
-        }
-        inStr = inStr.toLowerCase();
-
-        String signedVal = sov.sign(inStr);
-        System.out.println("Signed Value");
-        System.out.println(signedVal);
-
+    // Compute the partial derivative of the error with respect to the total net input.
+    public Double calculatePDErrorWRTTotalNetInput(double targetOutput) {
+        return calculatePDErrorWRTOutput(targetOutput) * calculatePDTotalNetInputWRTInput();
+    }
+    // Calculate error. How different are we from the target?
+    public Double calculate_error(Double targetOutput) {
+        double theError = 0.5 * Math.pow(targetOutput - output, 2.0);
+        return theError;
+    }
+    // Compute the partial derivative of the error with respect to the output.
+    public Double calculatePDErrorWRTOutput(double targetOutput) {
+        return (-1) * ( targetOutput - output);
+    }
+    // Compute the partial derivative of the total net input with respect to the input.
+    public Double  calculatePDTotalNetInputWRTInput() {
+        return output * ( 1.0 - output);
 
     }
-    // From Stack overflow
-    public static byte[] hexStringToByteArray(String s) {
-        int len = s.length();
-        byte[] data = new byte[len / 2];
-        for (int i = 0; i < len; i += 2) {
-            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
-                    + Character.digit(s.charAt(i+1), 16));
-        }
-        return data;
+    // Calculate the partial derivative of the total net input with respect to the weight.
+    public Double calculatePDTotalNetInputWRTWeight(int index) {
+        return inputs.get(index);
     }
 }
 
-```
-ShortMessageVerify - Signature verification
+// The Neuron layer represents a collection of neurons.
+// All neurons in the same layer have the same bias.
+// We include in each layer the number of neurons and the list of neurons.
+class NeuronLayer {
+    private double bias;
+    private int numNeurons;
 
-```
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Scanner;
+    public List<Neuron> neurons;
 
-/** ShortMessageVerify.java provides capabilities to verify
- *  very short messages. These messages are 4 hex digits.
- *  ShortMessageVerify has two private members: RSA e and n.
- *  These are all very small java BigIntegers. ShortMessageVerify is
- *  only used for instructional purposes.
- *
- *
- *  For verification: the object is constructed with keys (e and n). The verify
- *  method is called with two parameters - the string to be checked and the
- *  evidence that this string was indeed manipulated by code with access to the
- *  private key d.
- *  The message that is signed or verified is 4 hex digits.
- *  The signature is represented by a base 10 integer.
- */
+    // Construct by specifying the number of neurons and the bias that applies to all the neurons in this layer.
+    // If the bias is not provided, choose a random bias.
+    // Create neurons for this layer and set the bias in each neuron.
+    public NeuronLayer(int numNeurons, Double bias) {
+        if(bias == null) {
 
-
-public class ShortMessageVerify {
-
-    private BigInteger e,n;
-
-    /** For verifying, a SignOrVerify object may be constructed
-     *   with a RSA's e and n. Only e and n are used for signature verification.
-     */
-    public ShortMessageVerify(BigInteger e, BigInteger n) {
-        this.e = e;
-        this.n = n;
-    }
-
-    /**
-     * Verifying proceeds as follows:
-     * 1) Decrypt the encryptedHash to compute a decryptedHash
-     * 2) Hash the messageToCheck using SHA-256 (be sure to handle
-     *    the extra byte as described in the signing method.)
-     * 3) If this new hash is equal to the decryptedHash, return true else false.
-     *
-     * @param messageToCheck  a normal string (4 hex digits) that needs to be verified.
-     * @param encryptedHashStr integer string - possible evidence attesting to its origin.
-     * @return true or false depending on whether the verification was a success
-     * @throws Exception
-     */
-    public boolean verify(String messageToCheck, String encryptedHashStr)throws Exception  {
-
-        // Take the encrypted string and make it a big integer
-        BigInteger encryptedHash = new BigInteger(encryptedHashStr);
-        // Decrypt it
-        BigInteger decryptedHash = encryptedHash.modPow(e, n);
-
-        // Get the bytes from messageToCheck
-        byte[] bytesOfMessageToCheck = messageToCheck.getBytes("UTF-8");
-
-        // compute the digest of the message with SHA-256
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
-
-        byte[] messageToCheckDigest = md.digest(bytesOfMessageToCheck);
-
-        // messageToCheckDigest is a full SHA-256 digest
-        // take two bytes from SHA-256 and add a zero byte
-        byte[] extraByte = new byte[3];
-        extraByte[0] = 0;
-        extraByte[1] = messageToCheckDigest[0];
-        extraByte[2] = messageToCheckDigest[1];
-
-        // Make it a big int
-        BigInteger bigIntegerToCheck = new BigInteger(extraByte);
-
-        // inform the client on how the two compare
-        if(bigIntegerToCheck.compareTo(decryptedHash) == 0) {
-
-            return true;
+            this.bias = new Random().nextDouble();
         }
         else {
-            return false;
+            this.bias = bias;
+        }
+        this.numNeurons = numNeurons;
+        this.neurons  = new ArrayList<Neuron>();
+        for(int i = 0; i < numNeurons; i++) {
+            this.neurons.add(new Neuron(this.bias));
         }
     }
-
-
-    public static void main(String args[]) throws Exception {
-
-        // Test driver for ShortMessageVerify
-
-        // ShortMessageVerify may use some really small keys
-        // The keys were generated by the RSA algorithm
-        // p and q were 20 bits each
-        BigInteger e = new BigInteger("65537");
-
-        BigInteger n = new BigInteger("9013594933187057813");
-
-        ShortMessageVerify verifySig = new ShortMessageVerify(e,n);
-
-        Scanner sc = new Scanner(System.in);
-
-        // Check an existing signature
-
-        System.out.println("Enter hash that was signed (4 hex digits)");
-        System.out.println("All data will be converted to lower case");
-        String data = sc.nextLine();
-        if(data.length() != 4) {
-            System.out.println("Invalid input");
-            System.exit(0);
-        }
-        data = data.toLowerCase();
-        System.out.println("Enter an integer representing the signature");
-        String sig = sc.nextLine();
-        if(verifySig.verify(data, sig)) {
-            System.out.println("Valid signature");
-        }
-        else {
-            System.out.println("invalid signature");
+    // Display the neuron layer by displaying each neuron.
+    public String toString() {
+        String s = "";
+        s = s + "Neurons: " + neurons.size() + "\n";
+        for(int n = 0; n < neurons.size(); n++) {
+            s = s + "Neuron " + n + "\n";
+            for (int w = 0; w < neurons.get(n).weights.size(); w++) {
+                s = s + "\tWeight: " + neurons.get(n).weights.get(w) + "\n";
+            }
+            s = s + "\tBias " + bias + "\n";
         }
 
+        return s;
     }
-    // from Stack overflow
-    public static byte[] hexStringToByteArray(String s) {
-        int len = s.length();
-        byte[] data = new byte[len / 2];
-        for (int i = 0; i < len; i += 2) {
-            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
-                    + Character.digit(s.charAt(i+1), 16));
+
+    // Feed the input data into the neural network and produce some output in the output layer.
+    // Return a list of outputs. There may be a single output in the output list.
+    List<Double> feedForward(List<Double> inputs) {
+
+        List<Double> outputs = new ArrayList<Double>();
+
+        for(Neuron neuron : neurons ) {
+
+            outputs.add(neuron.calculateOutput(inputs));
         }
-        return data;
+
+        return outputs;
+    }
+    // Return a list of outputs from this layer.
+    // We do this by gathering the output of each neuron in the layer.
+    // This is returned as a list of Doubles.
+    // This is not used in this program.
+    List<Double> getOutputs() {
+        List<Double> outputs = new ArrayList<Double>();
+        for(Neuron neuron : neurons ) {
+            outputs.add(neuron.output);
+        }
+        return outputs;
     }
 }
+
+// The NeuralNetwork class represents two layers of neurons - a hidden layer and an output layer.
+// We also include the number of inputs and the learning rate.
+// The learning rate determines the step size by which the network’s weights are
+// updated during each iteration of training. This is typically chosen experimentally.
+
+public class NeuralNetwork {
+
+    // The learning rate is chosen experimentally. Typically, it is set between 0 and 1.
+    private double LEARNING_RATE = 0.5;
+    // This truth table example will have two inputs.
+    private int numInputs;
+
+    // This neural network will be built from two layers of neurons.
+    private NeuronLayer hiddenLayer;
+    private NeuronLayer outputLayer;
+
+    // The neural network is constructed by specifying the number of inputs, the number of neurons in the hidden layer,
+    // the number of neurons in the output layer, the hidden layer weights, the hidden layer bias,
+    // the output layer weights and output layer bias.
+    public NeuralNetwork(int numInputs, int numHidden, int numOutputs, List<Double> hiddenLayerWeights, Double hiddenLayerBias,
+                         List<Double> outputLayerWeights, Double outputLayerBias) {
+        // How many inputs to this neural network
+        this.numInputs = numInputs;
+
+        // Create two layers, one hidden layer and one output layer.
+        hiddenLayer = new NeuronLayer(numHidden, hiddenLayerBias);
+        outputLayer = new NeuronLayer(numOutputs, outputLayerBias);
+
+        initWeightsFromInputsToHiddenLayerNeurons(hiddenLayerWeights);
+
+        initWeightsFromHiddenLayerNeuronsToOutputLayerNeurons(outputLayerWeights);
+    }
+
+    // The hidden layer neurons have weights that are assigned here. If the actual weights are not
+    // provided, random weights are generated.
+    public void initWeightsFromInputsToHiddenLayerNeurons(List<Double> hiddenLayerWeights) {
+
+        int weightNum = 0;
+        for (int h = 0; h < hiddenLayer.neurons.size(); h++) {
+            for (int i = 0; i < numInputs; i++) {
+                if (hiddenLayerWeights == null) {
+                    hiddenLayer.neurons.get(h).weights.add((new Random()).nextDouble());
+                } else {
+                    hiddenLayer.neurons.get(h).weights.add(hiddenLayerWeights.get(weightNum));
+                }
+                weightNum = weightNum + 1;
+            }
+        }
+    }
+
+    // The output layer neurons have weights that are assigned here. If the actual weights are not
+    // provided, random weights are generated.
+    public void initWeightsFromHiddenLayerNeuronsToOutputLayerNeurons(List<Double> outputLayerWeights) {
+        int weightNum = 0;
+        for (int o = 0; o < outputLayer.neurons.size(); o++) {
+            for (int h = 0; h < hiddenLayer.neurons.size(); h++) {
+                if (outputLayerWeights == null) {
+                    outputLayer.neurons.get(o).weights.add((new Random()).nextDouble());
+                } else {
+                    outputLayer.neurons.get(o).weights.add(outputLayerWeights.get(weightNum));
+                }
+                weightNum = weightNum + 1;
+            }
+        }
+    }
+
+    // Display a NeuralNetwork object by calling the toString on each layer.
+    public String toString() {
+        String s = "";
+        s = s + "-----\n";
+        s = s + "* Inputs: " + numInputs + "\n";
+        s = s + "-----\n";
+
+        s = s + "Hidden Layer\n";
+        s = s + hiddenLayer.toString();
+        s = s + "----";
+        s = s + "* Output layer\n";
+        s = s + outputLayer.toString();
+        s = s + "-----";
+        return s;
+    }
+
+    // Feed the inputs provided into the network and get outputs.
+    // The inputs are provided to the hidden layer. The hidden layer's outputs
+    // are provided as inputs the output layer. The outputs of the output layer
+    // are returned to the caller as a list of outputs. That number of outputs may be one.
+    // The feedForward method is called on each layer.
+    public List<Double> feedForward(List<Double> inputs) {
+
+        List<Double> hiddenLayerOutputs = hiddenLayer.feedForward(inputs);
+        return outputLayer.feedForward(hiddenLayerOutputs);
+    }
+
+    // Training means to feed the data forward - forward propagation. Compare the result with the target(s), and
+    // use backpropagation to update the weights. See the blog post to review the math.
+    public void train(List<Double> trainingInputs, List<Double> trainingOutputs) {
+
+        // Update state of neural network and ignore the return value
+        feedForward(trainingInputs);
+        // Perform backpropagation
+        List<Double> pdErrorsWRTOutputNeuronTotalNetInput =
+                new ArrayList<Double>(Collections.nCopies(outputLayer.neurons.size(), 0.0));
+        for (int o = 0; o < outputLayer.neurons.size(); o++) {
+            pdErrorsWRTOutputNeuronTotalNetInput.set(o, outputLayer.neurons.get(o).calculatePDErrorWRTTotalNetInput(trainingOutputs.get(o)));
+        }
+        List<Double> pdErrorsWRTHiddenNeuronTotalNetInput =
+                new ArrayList<Double>(Collections.nCopies(hiddenLayer.neurons.size(), 0.0));
+        for (int h = 0; h < hiddenLayer.neurons.size(); h++) {
+            double dErrorWRTHiddenNeuronOutput = 0;
+            for (int o = 0; o < outputLayer.neurons.size(); o++) {
+                dErrorWRTHiddenNeuronOutput +=
+                        pdErrorsWRTOutputNeuronTotalNetInput.get(o) * outputLayer.neurons.get(o).weights.get(h);
+                pdErrorsWRTHiddenNeuronTotalNetInput.set(h, dErrorWRTHiddenNeuronOutput *
+                        hiddenLayer.neurons.get(h).calculatePDTotalNetInputWRTInput());
+            }
+        }
+        for (int o = 0; o < outputLayer.neurons.size(); o++) {
+            for (int wHo = 0; wHo < outputLayer.neurons.get(o).weights.size(); wHo++) {
+                double pdErrorWRTWeight =
+                        pdErrorsWRTOutputNeuronTotalNetInput.get(o) *
+                                outputLayer.neurons.get(o).calculatePDTotalNetInputWRTWeight(wHo);
+                outputLayer.neurons.get(o).weights.set(wHo, outputLayer.neurons.get(o).weights.get(wHo) - LEARNING_RATE * pdErrorWRTWeight);
+            }
+        }
+        for (int h = 0; h < hiddenLayer.neurons.size(); h++) {
+            for (int wIh = 0; wIh < hiddenLayer.neurons.get(h).weights.size(); wIh++) {
+                double pdErrorWRTWeight =
+                        pdErrorsWRTHiddenNeuronTotalNetInput.get(h) *
+                                hiddenLayer.neurons.get(h).calculatePDTotalNetInputWRTWeight(wIh);
+                hiddenLayer.neurons.get(h).weights.set(wIh, hiddenLayer.neurons.get(h).weights.get(wIh) - LEARNING_RATE * pdErrorWRTWeight);
+            }
+        }
+    }
+
+    // Perform a feed forward for each training row and total the error.
+    public double calculateTotalError(ArrayList<Double[][]> trainingSets) {
+
+        double totalError = 0.0;
+
+        for (int t = 0; t < trainingSets.size(); t++) {
+            List<Double> trainingInputs = Arrays.asList(trainingSets.get(t)[0]);
+            List<Double> trainingOutputs = Arrays.asList(trainingSets.get(t)[1]);
+            feedForward(trainingInputs);
+            for (int o = 0; o < trainingOutputs.size(); o++) {
+                totalError += outputLayer.neurons.get(o).calculate_error(trainingOutputs.get(o));
+            }
+        }
+        return totalError;
+    }
+
+    // Read the user input with a Scanner.
+    static Scanner scanner = new Scanner(System.in);
+
+    public static void main(String args[]) {
+
+        // Create an initial truth table with all 0's in the range.
+        ArrayList<Double[][]> user_training_sets = new ArrayList<Double[][]>(Arrays.asList(
+                new Double[][]{{0.0, 0.0}, {0.0}},
+                new Double[][]{{0.0, 1.0}, {0.0}},
+                new Double[][]{{1.0, 0.0}, {0.0}},
+                new Double[][]{{1.0, 1.0}, {0.0}}
+        ));
+        //     Create a neural network suitable for working with truth tables.
+        //     There will be two inputs, 5 hidden neurons, and 1 output. All weights and biases will be random.
+        //     This is the initial neural network on start up.
+        NeuralNetwork neuralNetwork = new NeuralNetwork(2, 5, 1, null, null, null, null);
+
+        Random rand = new Random();
+        int random_choice;
+
+        // Hold a list of doubles for input for the neural network to train on.
+        // In this example, if we want to train the neural network to learn the XOR,
+        // the list would have two doubles, say 0 1 or 1 0 or 1 1.
+        List<Double> user_training_inputs;
+
+        // Hold a list of double for the output of training. For example, XOR would produce 1 double as output.
+        List<Double> user_training_outputs;
+
+        int userSelection = menu();
+
+        while (userSelection != 5) {
+            switch (userSelection) {
+                case 0: // display the truth table
+                    System.out.println("Working with the following truth table");
+                    for (int r = 0; r < 4; r++) {
+                        System.out.print(user_training_sets.get(r)[0][0] + "  " + user_training_sets.get(r)[0][1] + "  " + user_training_sets.get(r)[1][0] + "  ");
+                        System.out.println();
+                    }
+                    break;
+                case 1:  // get the range values of the truth table. These values are from the rightmost column of a
+                         // standard truth table.
+                    System.out.println("Enter the four results of a 4 by 2 truth table. Each value should be 0 ot 1.");
+                    Double a = scanner.nextDouble();
+                    Double b = scanner.nextDouble();
+                    Double c = scanner.nextDouble();
+                    Double d = scanner.nextDouble();
+                    // Create the new table with the user input as the rightmost column.
+                    user_training_sets = new ArrayList<Double[][]>(Arrays.asList(
+                            new Double[][]{{0.0, 0.0}, {a}},
+                            new Double[][]{{0.0, 1.0}, {b}},
+                            new Double[][]{{1.0, 0.0}, {c}},
+                            new Double[][]{{1.0, 1.0}, {d}}
+                    ));
+                    // Build a new neural network with new random weights.
+                    neuralNetwork = new NeuralNetwork(2, 5, 1, null, null, null, null);
+                    break;
+
+                case 2: // perform a single trainng step and display total error.
+                    random_choice = rand.nextInt(4);
+                    // Get the two inputs
+                    user_training_inputs = Arrays.asList(user_training_sets.get(random_choice)[0]);
+                    // Get the one output (in the case of truth tables).
+                    user_training_outputs = Arrays.asList(user_training_sets.get(random_choice)[1]);
+                    // Show that row to the neural network
+                    neuralNetwork.train(user_training_inputs, user_training_outputs);
+                    // Show error as we train
+                    System.out.println("After this step the error is : " + neuralNetwork.calculateTotalError(user_training_sets));
+                    break;
+                case 3: // perform n training steps
+                    System.out.println("Enter the number of training sets.");
+                    int n = scanner.nextInt();
+                    for (int i = 0; i < n; i++) {
+                        random_choice = rand.nextInt(4);
+                        // Get the two inputs
+                        user_training_inputs = Arrays.asList(user_training_sets.get(random_choice)[0]);
+                        // Get the one output
+                        user_training_outputs = Arrays.asList(user_training_sets.get(random_choice)[1]);
+                        // Show that row to the neural network
+                        neuralNetwork.train(user_training_inputs, user_training_outputs);
+                    }
+                    // Show error as we train
+                    System.out.println("After " + n + " training steps, our error " + neuralNetwork.calculateTotalError(user_training_sets));
+                    break;
+                case 4: // test with a pair of inputs.
+                    System.out.println("Enter a pair of doubles from a row of the truth table. These are domain values.");
+                    double input0 = scanner.nextDouble();
+                    double input1 = scanner.nextDouble();
+
+                    List<Double> testUserInputs = new ArrayList<>(Arrays.asList(input0, input1));
+                    List<Double> userOutput = neuralNetwork.feedForward(testUserInputs);
+                    System.out.println("The range value is approximately " + userOutput.get(0));
+                    break;
+                case 5:
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Error in input. Please choose an integer from the main menu.");
+                    break;
+            }
+            userSelection = menu();
+        }
+    }
+    public static int menu() {
+        System.out.println("Using a neural network to learn a truth table.\nMain Menu");
+        System.out.println("0. Display the current truth table.");
+        System.out.println("1. Provide four inputs for the range of the two input truth table and build a new neural network. To test XOR, enter 0  1  1  0.");
+        System.out.println("2. Perform a single training step.");
+        System.out.println("3. Perform n training steps. 10000 is a typical value for n.");
+        System.out.println("4. Test with a pair of inputs.");
+        System.out.println("5. Exit program.");
+        int selection = scanner.nextInt();
+        return selection;
+    }
+}
+
 ```
+
+ 1. An example exectution of the program appears next:
+
+ ```
+ Using a neural network to learn a truth table.
+ Main Menu
+ 0. Display the current truth table.
+ 1. Provide four inputs for the range of the two input truth table and build a new neural network. To test XOR, enter 0  1  1  0.
+ 2. Perform a single training step.
+ 3. Perform n training steps. 10000 is a typical value for n.
+ 4. Test with a pair of inputs.
+ 5. Exit program.
+ 0
+ Working with the following truth table
+ 0.0  0.0  0.0  
+ 0.0  1.0  0.0  
+ 1.0  0.0  0.0  
+ 1.0  1.0  0.0  
+ Using a neural network to learn a truth table.
+ Main Menu
+ 0. Display the current truth table.
+ 1. Provide four inputs for the range of the two input truth table and build a new neural network. To test XOR, enter 0  1  1  0.
+ 2. Perform a single training step.
+ 3. Perform n training steps. 10000 is a typical value for n.
+ 4. Test with a pair of inputs.
+ 5. Exit program.
+ 1
+ Enter the four results of a 4 by 2 truth table. Each value should be 0 ot 1.
+ 0 1 1 0
+ Using a neural network to learn a truth table.
+ Main Menu
+ 0. Display the current truth table.
+ 1. Provide four inputs for the range of the two input truth table and build a new neural network. To test XOR, enter 0  1  1  0.
+ 2. Perform a single training step.
+ 3. Perform n training steps. 10000 is a typical value for n.
+ 4. Test with a pair of inputs.
+ 5. Exit program.
+ 0
+ Working with the following truth table
+ 0.0  0.0  0.0  
+ 0.0  1.0  1.0  
+ 1.0  0.0  1.0  
+ 1.0  1.0  0.0  
+ Using a neural network to learn a truth table.
+ Main Menu
+ 0. Display the current truth table.
+ 1. Provide four inputs for the range of the two input truth table and build a new neural network. To test XOR, enter 0  1  1  0.
+ 2. Perform a single training step.
+ 3. Perform n training steps. 10000 is a typical value for n.
+ 4. Test with a pair of inputs.
+ 5. Exit program.
+ 2
+ After this step the error is : 0.8037225095271462
+ Using a neural network to learn a truth table.
+ Main Menu
+ 0. Display the current truth table.
+ 1. Provide four inputs for the range of the two input truth table and build a new neural network. To test XOR, enter 0  1  1  0.
+ 2. Perform a single training step.
+ 3. Perform n training steps. 10000 is a typical value for n.
+ 4. Test with a pair of inputs.
+ 5. Exit program.
+ 3
+ Enter the number of training sets.
+ 10000
+ After 10000 training steps, our error 0.0061667496139162885
+ Using a neural network to learn a truth table.
+ Main Menu
+ 0. Display the current truth table.
+ 1. Provide four inputs for the range of the two input truth table and build a new neural network. To test XOR, enter 0  1  1  0.
+ 2. Perform a single training step.
+ 3. Perform n training steps. 10000 is a typical value for n.
+ 4. Test with a pair of inputs.
+ 5. Exit program.
+ 4
+ Enter a pair of doubles from a row of the truth table. These are domain values.
+ 0 1
+ The range value is approximately 0.9436960462470947
+ Using a neural network to learn a truth table.
+ Main Menu
+ 0. Display the current truth table.
+ 1. Provide four inputs for the range of the two input truth table and build a new neural network. To test XOR, enter 0  1  1  0.
+ 2. Perform a single training step.
+ 3. Perform n training steps. 10000 is a typical value for n.
+ 4. Test with a pair of inputs.
+ 5. Exit program.
+ 4
+ Enter a pair of doubles from a row of the truth table. These are domain values.
+ 1 1
+ The range value is approximately 0.04579382338123964
+ Using a neural network to learn a truth table.
+ Main Menu
+ 0. Display the current truth table.
+ 1. Provide four inputs for the range of the two input truth table and build a new neural network. To test XOR, enter 0  1  1  0.
+ 2. Perform a single training step.
+ 3. Perform n training steps. 10000 is a typical value for n.
+ 4. Test with a pair of inputs.
+ 5. Exit program.
+ 4
+ Enter a pair of doubles from a row of the truth table. These are domain values.
+ 0 0
+ The range value is approximately 0.06329027307191817
+ Using a neural network to learn a truth table.
+ Main Menu
+ 0. Display the current truth table.
+ 1. Provide four inputs for the range of the two input truth table and build a new neural network. To test XOR, enter 0  1  1  0.
+ 2. Perform a single training step.
+ 3. Perform n training steps. 10000 is a typical value for n.
+ 4. Test with a pair of inputs.
+ 5. Exit program.
+ 4
+ Enter a pair of doubles from a row of the truth table. These are domain values.
+ 1 0
+ The range value is approximately 0.9446770292352884
+ Using a neural network to learn a truth table.
+ Main Menu
+ 0. Display the current truth table.
+ 1. Provide four inputs for the range of the two input truth table and build a new neural network. To test XOR, enter 0  1  1  0.
+ 2. Perform a single training step.
+ 3. Perform n training steps. 10000 is a typical value for n.
+ 4. Test with a pair of inputs.
+ 5. Exit program.
+
+ ```
+ 2. Your task is to distribute NeuralNetwork.java into two programs. One of these will act as the client. Name your client NeuralNetworkClient.java. The other will act as the server. Name your server NeuralNetworkServer.java.
+
+ 3. Your client and server will communicate using JSON messages over UDP.
+
+ 4. The neural network will live only on the server. When the server receives a JSON message, it carries out
+ the requested task on the neural network and returns a result (also encoded in JSON) to the client.
+
+ 5. The client will behave just like the stand alone application shown above. It will provide the same menu of options but, this time, it will communicate with the server to handle requests on the neural network.
+
+ 6. You should think about the format (design) of the JSON messages. Some need to go from the client to the server and some need to go from the server back to the client.
+
+ 7. As you did in Task 2, use a proxy design to encapsulate the communication code.
+
+ :checkered_flag:**On your single pdf, make a copy of your client and label it clearly as "Project2Task4Client".**
+
+ :checkered_flag:**On your single pdf, make a copy of your server and label it clearly as "Project2Task4Server".**
+
+ :checkered_flag:**Take a screenshot (or copy and paste) your client console screen. The user should show the neural network being trained to learn the logical "OR", "XOR", and "AND" operations.  On your single pdf, label this screenshot as "Project2Task4ClientConsole".**
+
+ :checkered_flag:**Take a screenshot (or copy and paste) of your server console. It will show each JSON string being sent by the client to the server and will show each JSON string being sent back to the client. On your single pdf, label this screenshot as "Project2Task4ServerConsole".**
+
 
 ## Submission Summary:
 
 :checkered_flag: Submit to Canvas the single PDF file named Your_Last_Name_First_Name_Project2.pdf. It is important that you ***clearly label*** each submission. Be sure to provide your name and email address at the top of the .pdf file.
 
-Finally, create six zip files, each one of which is the zip of your WHOLE project for tasks 0, 1, 2, 3, 4 and 5. Each project will contain one client and one server (except for Task 1). For each project, zip the whole project, you need to use "File->Export Project->To Zip" in IntelliJ.
+Finally, create five zip files, each one of which is the zip of your WHOLE project for tasks 0, 1, 2, 3, and 4. Each project will contain one client and one server (except for Task 1). For each project, zip the whole project, you need to use "File->Export Project->To Zip" in IntelliJ.
 
 Zip the one PDF and the six project zip files into one big zip file for submission. Name this file your_andrew_id.zip.
