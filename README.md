@@ -6,7 +6,7 @@
 
 ### Due: Friday, February 23, 2024,11:59pm
 
-#### Six Tasks
+#### Five Tasks
 
 :checkered_flag: Submit to Canvas a ***single PDF file*** named Your_Last_Name_First_Name_Project2.pdf along with a single zip file containing each of the six IntelliJ projects below (Task 0 through 5).
 
