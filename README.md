@@ -28,7 +28,7 @@ Our **third objective** is for you to understand the abstraction provided by Rem
 
 Our **fourth objective** is the learn how to distribute a stand alone application. We use a simple neural network as our application. Our intent is not to study neural networks in a class on distributed systems. But some of you might decide to dig further into neural networks and use this application as a starting point.
 
-Optionally, you may use a large language model (based on neural networks), such as ChatGPT or Copilot, to create some of your code. Task 0, Task 1, and Task 5 must be done without the help of a large language model. There will be exam questions that ask specifically about the code in these three tasks. While you are allowed to use AI tools for these three tasks, it is totally optional. There will be questions about these tasks, too, but these questions will be more generic (since different students may code these tasks using different techniques).
+Optionally, you may use a large language model (based on neural networks), such as ChatGPT or Copilot, to create some of your code. Task 0, Task 1, and Task 4 must be done without the help of a large language model. There will be exam questions that ask specifically about the code in these three tasks. While you are allowed to use AI tools for these three tasks, it is totally optional. There will be questions about these tasks, too, but these questions will be more generic (since different students may code these tasks using different techniques).
 
 ### Submission notes:
 
