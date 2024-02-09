@@ -353,7 +353,7 @@ And here is a truth table for the XOR operation:
 1  1  0
 
 The user is asked to provide the rightmost column of the table. For example, if the user wants to
-train the table for the XOR operation, the user will provide the following inputs:  0  1  1  0.
+train the network to learn the XOR operation, the user will provide the following inputs:  0  1  1  0.
 
 10,000 steps are typically used to train the network. If the error is close to 0, for example, 0.053298, the network
 will perform well.
@@ -760,7 +760,7 @@ public class NeuralNetwork {
 
 ```
 
- 2. An example exectution of the program appears next:
+ 2. An example execution of the program appears next:
 
  ```
  Using a neural network to learn a truth table.
