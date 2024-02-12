@@ -893,7 +893,8 @@ public class NeuralNetwork {
 
  7. You should think about the format (design) of the JSON messages. Some need to go from the client to the server and some need to go from the server back to the client.
 
- 8. In my solution, I expect to use the following JSON message sketches (feel free to improve):
+ 8. In my solution, I use the following JSON messages. In order to work with JSON, I used the gson library from Google. In the appendix of this document, I have added some helpful notes on working with
+ gson in IntelliJ.
 
 ```
 {“request”:”getCurrentRange”}
@@ -931,3 +932,126 @@ Here are the four corresponding response messages:
 Finally, create five zip files, each one of which is the zip of your WHOLE project for tasks 0, 1, 2, 3, and 4. Each project will contain one client and one server (except for Task 1). For each project, zip the whole project, you need to use "File->Export Project->To Zip" in IntelliJ.
 
 Zip the one PDF and the five project zip files into one big zip file for submission. Name this file your_andrew_id.zip.
+
+## Appendix working with gson in IntelliJ.
+
+In this project we will be using the Gson class to parse JSON messages. In this appendix, there is guidance on setting up Gson in Intellij. JSON is a popular data format. It competes with XML. Either JSON or XML is appropriate to transfer textual data from one machine to another. Be sure to review the JSON grammar at www.json.org.
+
+0. Create a new project named TestGsonProject and select "Maven" as the build system.
+1. Edit the pom.xml file and include this XML element at the end of the file (before the closing project tag).
+```
+<dependency>
+        <groupId>com.google.code.gson</groupId>
+        <artifactId>gson</artifactId>
+        <version>2.9.0</version>
+</dependency>
+```
+2. Select File/Project Structure/Libraries/+/From Maven/.
+   Using the search bar, search for com.google.code.gson.
+   And then select com.google.code.gson:2.9.0.
+
+3. Include the following import in your source code:
+
+```
+import com.google.gson.Gson;
+```    
+
+4. Test by compiling and running the following program (you may need to add a package):
+
+```
+import com.google.gson.Gson;
+
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Hello world!");
+        Gson gson = new Gson();
+        System.out.println("Gson is available!");
+    }
+}
+```
+
+5. Suppose we have a message object that we want to serialize to JSON. Why do this?
+We may want to transmit the data over a network in an interoperable and textual way.
+
+```
+package org.example;
+import com.google.gson.Gson;
+
+class Message {
+    String name;
+    int id;
+    public Message(String name, int id) {
+        this.name = name;
+        this.id = id;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // Create a message
+        Message msg = new Message("Alice", 30);
+        // Create a Gson object
+        Gson gson = new Gson();
+        // Serialize to JSON
+        String messageToSend = gson.toJson(msg);
+        // Display the JSON string
+        System.out.println(messageToSend);
+    }
+}
+```
+
+6. Suppose we receive a message as a JSON string. We may want to deserialize
+the JSON string to a Java object. Why do this? This is a huge convenience.
+We do not have to parse the message ourselves.
+
+```
+package org.example;
+import com.google.gson.Gson;
+
+class Message {
+    String name;
+    int id;
+    public Message(String name, int id) {
+        this.name = name;
+        this.id = id;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // Create a message
+        Message msg = new Message("Alice", 30);
+        // Create a Gson object
+        Gson gson = new Gson();
+        // Serialize to JSON
+        String messageToSend = gson.toJson(msg);
+        // Display the JSON string
+        System.out.println(messageToSend);
+
+        // Suppose we receive the following JSON string from a network or file.
+        // Double quotes would be used in a real message. Single quotes are used
+        // here because we are doing this within a Java program.
+        String someJSON = "{'id':45,'name':'Bob'}";
+        Message incommingMsg = gson.fromJson(someJSON,Message.class);
+        System.out.println(incommingMsg.name);
+        System.out.println(incommingMsg.id);
+
+    }
+}
+```
+7. As a warm up exercise, write a program that reads a financial transaction from the keyboard. The transaction
+will be expressed as a JSON string. Use Gson to build a Java object from the JSON string. Display the values
+within the object and then use Gson to display the Java object in JSON format.
+
+8. It is fine to use a large language model for this exercise. It is also fine to simply code this yourself.
+
+Here is an example execution:
+```
+Enter a transaction in Json format. Include from, to, and amount.       
+{"from":"Mike","to":"Marty","amount":123.50}      This line is entered by the user.
+From: Mike                                        Display values within the object
+To: Marty
+Amount: 123.5
+{"from":"Mike","to":"Marty","amount":123.5}       Use Gson to generate the JSON
+
+```
