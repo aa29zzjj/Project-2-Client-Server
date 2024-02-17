@@ -161,6 +161,8 @@ Third, when you run EchoClientUDP.java, provide it with either the correct port 
 
 Eavesdropper is an active attacker. If the client sends a string containing the word &quot;like&quot; the eavesdropper will replace the word &quot;like&quot; with the word &quot;dislike&quot;. The eavesdroppr will not bother with the string &quot;like&quot; if it is included as a substring of another word, such as &quot;dislike&quot;.
 
+The eavesdropper need only replace the first occurrence of the word &quot;like&quot; with the word &quot;dislike&quot; and it will leave alone the response from the server. In other words, when it receives &quot;like&quot;, it sends &quot;dislike&quot; back to the client.
+
 If the client sends the message &quot;halt!&quot; then the server will respond, as usual, and then halt execution. The client will halt when it hears from the server. Our malicious player runs forever. And it displays everything it sees to its console.
 
 :checkered_flag:**On your single pdf, make a copy of your documented EavesdropperUDP.java program.
