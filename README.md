@@ -18,7 +18,7 @@ When all of your work is complete, zip the one PDF and the five project zip file
 
 ### Learning Objectives:
 
-Our **first objective** is for you to be able to work with the User Datagram Protocol (UDP). UDP is used in many internet applications. The Domain Name Service (DNS) and the Dynamic Host Configuration Protocol (DHCP) both use UDP. Most video and audio traffic uses UDP. We use UDP when we need high performance and do not mind an occasional dropped packet.
+Our **first objective** is for you to be able to work with the User Datagram Protocol (UDP). UDP is used in many internet applications. The Domain Name Service (DNS) and the Dynamic Host Configuration Protocol (DHCP) both use UDP. Most video and audio traffic uses UDP. Online gaming and Voice over IP (VoIP) use UDP. We use UDP when we need high performance and do not mind an occasional dropped packet.
 
 TCP, on the other hand, is also widely used. It works hard to make sure that not a single bit of information is lost in transit. The Hyper Text Transfer Protocol (HTTP) uses TCP. We are not using TCP in this project.
 
