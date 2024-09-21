@@ -4,7 +4,7 @@
 
 ### Assigned: Monday, September 23, 2024
 
-### Due: Monday, October 7, 2024,11:59pm
+### Due: Monday, October 7, 2024,2:00 PM
 
 #### Five Tasks
 
